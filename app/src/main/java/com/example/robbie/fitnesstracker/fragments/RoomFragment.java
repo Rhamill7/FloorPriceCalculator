@@ -99,16 +99,7 @@ public class RoomFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        com.github.clans.fab.FloatingActionButton fabStep = (com.github.clans.fab.FloatingActionButton)view.findViewById(R.id.menu1);
         com.github.clans.fab.FloatingActionButton fabGoal = (com.github.clans.fab.FloatingActionButton)view.findViewById(R.id.menu2);
-        fabStep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // addSteps();
-//                notify();
-
-            }
-        });
         fabGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

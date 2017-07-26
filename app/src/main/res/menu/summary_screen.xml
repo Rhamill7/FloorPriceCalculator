@@ -12,10 +12,4 @@
         android:orderInCategory="100"
         android:title="Delete"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_set_active"
-        android:orderInCategory="100"
-        android:title="Set Active"
-        app:showAsAction="never" />
 </menu>

@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="&#8942;"
-                android:paddingLeft="12dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="5dp"
                 android:id="@+id/txtOptionDigit"
                 android:textAppearance="?android:textAppearanceLarge"

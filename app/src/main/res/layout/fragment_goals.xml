@@ -158,21 +158,13 @@
         fab:menu_fab_show_animation="@anim/show_from_bottom"
         fab:menu_fab_hide_animation="@anim/hide_to_bottom">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_size="mini"
-            fab:fab_label="Add Steps"
-            android:src="@drawable/ic_directions_run_white_18dp"/>
-
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_size="mini"
-            fab:fab_label="Add Goal"
+            fab:fab_label="Add Room"
             android:src="@drawable/ic_grade_white_18dp"/>
 
     </com.github.clans.fab.FloatingActionMenu>
