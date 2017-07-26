@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,12 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.robbie.FloorPriceCalculator.helpers.MyAdapter;
 import com.example.robbie.FloorPriceCalculator.Room;
 import com.example.robbie.FloorPriceCalculator.database.FeedReaderDbHelper;
 import com.example.robbie.fitnesstracker.R;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,21 +75,25 @@ public class RoomFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
 
-
-
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+       calculations();
+
+
         com.github.clans.fab.FloatingActionButton fabGoal = (com.github.clans.fab.FloatingActionButton)view.findViewById(R.id.menu2);
         fabGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addGoal();
+
             }
         });
+
+
     }
 
 
@@ -166,6 +174,18 @@ public class RoomFragment extends Fragment {
         return rooms;
     }
 
+    public void calculations(){
+        ArrayList<Room> rooms = populateRooms();
+        Double area = 0.0;
+        for (int i = 0; i<rooms.size(); i++){
+            area = area + (rooms.get(i).getLength() * rooms.get(i).getBreadth());
+        }
+      //  CardView cv = (CardView) rootView.findViewById(R.id.card_view_active);
+        TextView current = (TextView) this.getView().findViewById(R.id.textView5);
+      //  TextView areaText = (TextView) this.getView().findViewById(R.id.textView5);
+        current.setText(area.toString());
+
+    }
 
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
