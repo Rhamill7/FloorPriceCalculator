@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.robbie.fitnesstracker.Goal;
+import com.example.robbie.fitnesstracker.Room;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -283,29 +284,29 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         return object;
     }
 
-    public ArrayList<Goal> getGoalsOnDate(String date) {
+    public ArrayList<Room> getRoomsOnDate(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor =  db.rawQuery("SELECT * FROM " + GOAL_TABLE_NAME + " WHERE " +
                 GOAL_COLUMN_DATE + " = ? AND " + GOAL_COLUMN_ACTIVE + " = ? "  , new String[]{date,Integer.toString(0)});
-        ArrayList<Goal> goals = new ArrayList<Goal>();
+        ArrayList<Room> rooms = new ArrayList<Room>();
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 //the .getString(int x) method of the cursor returns the column
                 //of the table your query returned
                 String name = cursor.getString(1);
-                int steps = Integer.parseInt(cursor.getString(2));
-                int target = Integer.parseInt(cursor.getString(3));
+                double length = Integer.parseInt(cursor.getString(2));
+                double breadth = Integer.parseInt(cursor.getString(3));
                 String gdate = cursor.getString(4);
                 int active = Integer.parseInt(cursor.getString(5));
-                String  units = cursor.getString(6);
+               // String  units = cursor.getString(6);
 
-                Goal object = new Goal(name, steps, target, gdate, active, units );
+                Room object = new Room(name, length, breadth, gdate, active);
                 // Adding contact to list
-                goals.add(object);
+                rooms.add(object);
             } while (cursor.moveToNext());
         }
-        return goals;
+        return rooms;
 
     }
 

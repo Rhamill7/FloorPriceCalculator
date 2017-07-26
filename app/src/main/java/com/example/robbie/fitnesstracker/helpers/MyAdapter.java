@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.robbie.fitnesstracker.Goal;
 import com.example.robbie.fitnesstracker.R;
+import com.example.robbie.fitnesstracker.Room;
 import com.example.robbie.fitnesstracker.database.FeedReaderDbHelper;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +35,7 @@ import java.util.Locale;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private String[] mDataset;
-    private ArrayList<Goal> goals;
+    private ArrayList<Room> rooms;
     private Context mContext;
     private ViewGroup vg;
     private FragmentManager fm;
@@ -65,8 +66,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter( ArrayList<Goal> goals, Context mContext) {
-        this.goals = goals;
+    public MyAdapter(ArrayList<Room> rooms, Context mContext) {
+        this.rooms = rooms;
         this.mContext = mContext;
     }
 
@@ -105,13 +106,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 //        if (!units.equals("Default")){
 //            goals.get(position).setUnits(units);
 //        }
-        Conversion convert = new Conversion(mContext);
-        String[] stepEntry = convert.convert(goals.get(position));
-       // int one = Integer.parseInt(stepEntry[0]);
-        int two = Integer.parseInt(stepEntry[2]);
-        holder.mTextView.setText(goals.get(position).getName());
-        holder.mTextViewLower.setText("Target: " + Integer.toString(two)+
-                " "+ goals.get(position).getUnits());
+//        Conversion convert = new Conversion(mContext);
+//        String[] stepEntry = convert.convert(rooms.get(position));
+
+//        int one = Integer.parseInt(stepEntry[0]);
+//        int two = Integer.parseInt(stepEntry[2]);
+        holder.mTextView.setText(rooms.get(position).getName());
+        holder.mTextViewLower.setText("Area (m^2): " + Double.toString((rooms.get(position).getLength() * rooms.get(position).getBreadth())));
        // holder.mCardView.findViewById(R.id.).setOnClickListener(new holder.);
 //        holder.mOptions.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -134,8 +135,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 //                                builder.setView(v);
 //                                TextView txt = (TextView) v.findViewById(R.id.titleFour);
 //                                txt.setText("Edit Goal");
-//                                step = (EditText) v.findViewById(R.id.roomLength);
-//                                 name = (EditText) v.findViewById(R.id.roomName1);
+//                                step = (EditText) v.findViewById(R.id.goalSteps1);
+//                                 name = (EditText) v.findViewById(R.id.goalName1);
 //                                    String[] spinner = new String[]{"Steps", "Meters", "Kilometers",
 //                                            "Yards", "Miles"};
 //                                   final Spinner s = (Spinner) v.findViewById(R.id.spinner3);
@@ -273,6 +274,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        return goals.size();
+        return rooms.size();
     }
 }

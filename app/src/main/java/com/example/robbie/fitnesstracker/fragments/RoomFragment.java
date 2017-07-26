@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.robbie.fitnesstracker.Room;
 import com.example.robbie.fitnesstracker.helpers.Conversion;
 import com.example.robbie.fitnesstracker.Goal;
 import com.example.robbie.fitnesstracker.database.FeedReaderDbHelper;
@@ -80,12 +81,12 @@ public class RoomFragment extends Fragment {
        }
         Toast.makeText(getContext(), date, Toast.LENGTH_LONG).show();
         rootView = inflater.inflate(R.layout.fragment_goals, container, false);
-        ArrayList<Goal> goals = populateGoals();
+        ArrayList<Room> rooms = populateGoals();
        // getActiveGoal();
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         rv.setHasFixedSize(true);
         FragmentManager fm = getFragmentManager();
-        MyAdapter rvAdapter = new MyAdapter(goals, getContext());
+        MyAdapter rvAdapter = new MyAdapter(rooms, getContext());
         rv.setAdapter(rvAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
@@ -148,8 +149,6 @@ public class RoomFragment extends Fragment {
 //        }
 
     public void addGoal(){
-        String[] spinner = new String[]{"Steps", "Meters", "Kilometers",
-                "Yards", "Miles"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View v =inflater.inflate(R.layout.custom_alert_dialog, null);
@@ -157,11 +156,6 @@ public class RoomFragment extends Fragment {
         roomName1 = (EditText) v.findViewById(R.id.roomName1);
         breadth = (EditText) v.findViewById(R.id.roomBreadth);
         length = (EditText) v.findViewById(R.id.roomLength);
-//        s = (Spinner) v.findViewById(R.id.spinner3);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
-//             android.R.layout.simple_dropdown_item_1line, spinner);
-//        s.setAdapter(adapter);
-
 
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id) {
@@ -182,8 +176,8 @@ public class RoomFragment extends Fragment {
                 } catch (Exception e){
                     Toast.makeText(getContext(), "Please Enter a Name and/or Step Goal", Toast.LENGTH_LONG).show();
                 }
-                ArrayList<Goal> goals = populateGoals();
-                MyAdapter adapter = new MyAdapter( goals, getContext());
+                ArrayList<Room> rooms = populateGoals();
+                MyAdapter adapter = new MyAdapter( rooms, getContext());
                 rv.setAdapter(adapter);
                 rv.invalidate();
             }
@@ -225,10 +219,10 @@ public class RoomFragment extends Fragment {
 //        }
 //    }
 
-    public ArrayList<Goal> populateGoals(){
-        ArrayList<Goal> goals = db.getGoalsOnDate(date);
+    public ArrayList<Room> populateGoals(){
+        ArrayList<Room> rooms = db.getRoomsOnDate(date);
 
-        return goals;
+        return rooms;
     }
 
     public void notification(){
