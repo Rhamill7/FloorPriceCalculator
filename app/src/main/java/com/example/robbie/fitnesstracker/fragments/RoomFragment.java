@@ -159,10 +159,10 @@ public class RoomFragment extends Fragment {
                     String tempTwo = length.getText().toString();
                     roomBreadth = Double.parseDouble(tempTwo);
 
-                    if(db.checkGoalExists(roomName,date)){
-                        Toast.makeText(getContext(), "This room already Exists for today!", Toast.LENGTH_LONG).show();
+                    if(db.checkGoalExists(roomName)){
+                        Toast.makeText(getContext(), "This room already Exists!", Toast.LENGTH_LONG).show();
                     }else {
-                        db.insertGoal(roomName, roomLength, roomBreadth, date, 0);
+                        db.insertGoal(roomName, roomLength, roomBreadth);
                     }
                 } catch (Exception e){
                     Toast.makeText(getContext(), "Please Enter a Name and/or Step Goal", Toast.LENGTH_LONG).show();
@@ -211,7 +211,7 @@ public class RoomFragment extends Fragment {
 //    }
 
     public ArrayList<Room> populateGoals(){
-        ArrayList<Room> rooms = db.getRoomsOnDate(date);
+        ArrayList<Room> rooms = db.getRooms();
 
         return rooms;
     }

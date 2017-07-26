@@ -8,85 +8,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Switch
-                android:id="@+id/switch1"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-            android:text="Turn Test Mode OFF/ON"
-                android:textAppearance="?android:textAppearanceLarge"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp" />
-
-
-        <Switch
-            android:id="@+id/switch2"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:text="Goals Editable N/Y"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_marginTop="80dp"
-            android:layout_below="@+id/textView8"
-            android:layout_alignStart="@+id/textView8" />
-
-        <Spinner
-            android:id="@+id/spinner4"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_below="@+id/textView3"
-            android:layout_alignEnd="@+id/switch1">
-
-        </Spinner>
-
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Test Date Selected:"
+            android:text="Cost for Coating (£)"
             android:textAppearance="?android:textAppearanceLarge"
-            android:layout_below="@+id/switch1"
-            android:layout_alignStart="@+id/switch1" />
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_alignBaseline="@+id/textView2"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_alignEnd="@+id/spinner4" />
+            android:layout_alignBottom="@+id/editText4"
+            android:layout_alignParentStart="true" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Units:"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_alignTop="@+id/spinner4"
-            android:layout_alignStart="@+id/textView2" />
+            android:layout_alignBaseline="@+id/textView6"
+            android:layout_alignBottom="@+id/textView6"
+            android:layout_alignStart="@+id/editText4"
+            android:ems="10"
+            android:hint="10.50"
+            android:inputType="numberDecimal" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView8"
-            android:layout_below="@+id/textView8"
-            android:layout_marginTop="27dp"
-            android:text="Stride Length (m)"
+            android:text="Cost for wood (£)"
             android:textAppearance="?android:textAppearanceLarge"
-            />
+            android:layout_below="@+id/editText4"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="41dp" />
 
         <EditText
             android:id="@+id/editText4"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/switch2"
-            android:layout_alignTop="@+id/textView6"
             android:ems="10"
+            android:hint="10.50"
             android:inputType="numberDecimal"
-            android:hint="0.5"/>
+            android:layout_marginEnd="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="19dp" />
 
 
     </RelativeLayout>

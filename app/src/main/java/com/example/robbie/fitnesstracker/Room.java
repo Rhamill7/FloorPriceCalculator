@@ -8,24 +8,11 @@ public class Room {
     private String name;
     private double length;
     private double breadth;
-    private String date;
-    private boolean active = false;
-    private String units;
 
-    public Room(String name, double length, double breadth, String date, int active){
+    public Room(String name, double length, double breadth){
         this.name = name;
         this.length = length;
         this.breadth= breadth;
-        this.date = date;
-       // this.units = units;
-
-        if (active == 1){
-            this.active = true;
-        }
-        else {
-            this.active = false;
-        }
-
     }
 
     public String getName(){
@@ -40,23 +27,4 @@ public class Room {
         return breadth;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public boolean isActive(){
-        return active;
-    }
-
-    public void setActive(){
-        this.active = true;
-    }
-
-    public String getUnits() {
-        return units;
-    }
-
-    public void setUnits(String units) {
-        this.units = units;
-    }
 }

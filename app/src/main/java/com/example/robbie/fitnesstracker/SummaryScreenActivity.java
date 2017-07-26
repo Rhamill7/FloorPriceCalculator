@@ -13,10 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.robbie.fitnesstracker.fragments.RoomFragment;
-import com.example.robbie.fitnesstracker.fragments.HistoryFragment;
 import com.example.robbie.fitnesstracker.fragments.SettingsFragment;
-import com.example.robbie.fitnesstracker.fragments.StatisticsFragment;
-import com.example.robbie.fitnesstracker.fragments.PedometerFragment;
 
 public class SummaryScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -71,22 +68,10 @@ public class SummaryScreenActivity extends AppCompatActivity
             RoomFragment roomFragment = new RoomFragment();
             FragmentManager manager = getFragmentManager();
             manager.beginTransaction().replace(R.id.content_summary_screen, roomFragment, roomFragment.getTag()).commit();
-        } else if (id == R.id.nav_history) {
-            HistoryFragment historyFragment = new HistoryFragment();
-            FragmentManager manager = getFragmentManager();
-            manager.beginTransaction().replace(R.id.content_summary_screen, historyFragment, historyFragment.getTag()).commit();
-        } else if (id == R.id.nav_stats) {
-            StatisticsFragment statisticsFragment = new StatisticsFragment();
-            FragmentManager manager = getFragmentManager();
-            manager.beginTransaction().replace(R.id.content_summary_screen, statisticsFragment, statisticsFragment.getTag()).commit();
         }  else if (id == R.id.nav_settings) {
             SettingsFragment settingsFragment = new SettingsFragment();
            FragmentManager manager = getFragmentManager();
            manager.beginTransaction().replace(R.id.content_summary_screen, settingsFragment, settingsFragment.getTag()).commit();
-        } else if (id == R.id.nav_test) {
-            PedometerFragment pedometerFragment = new PedometerFragment();
-            FragmentManager manager = getFragmentManager();
-            manager.beginTransaction().replace(R.id.content_summary_screen, pedometerFragment, pedometerFragment.getTag()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

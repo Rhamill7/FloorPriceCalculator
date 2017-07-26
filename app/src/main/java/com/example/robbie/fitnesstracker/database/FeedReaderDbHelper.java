@@ -26,14 +26,13 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
   //  public static final int DATABASE_VERSION = 1;
    // public static final String DATABASE_NAME = "FeedReader.db";
     public static final String DATABASE_NAME = "SQLiteExample.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     public static final String GOAL_TABLE_NAME = "goal";
     public static final String GOAL_COLUMN_ID = "_id";
     public static final String GOAL_COLUMN_NAME = "name";
     public static final String GOAL_COLUMN_LENGTH = "length";
     public static final String GOAL_COLUMN_BREADTH = "breadth";
-    public static final String GOAL_COLUMN_DATE = "date";
-    public static final String GOAL_COLUMN_ACTIVE = "active";
+
 
     public static final String TEST_TABLE_NAME = "test";
     public static final String TEST_COLUMN_ID = "_id";
@@ -54,9 +53,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 "(" + GOAL_COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 GOAL_COLUMN_NAME + " TEXT, " +
                 GOAL_COLUMN_LENGTH + " REAL, " +
-                GOAL_COLUMN_BREADTH + " REAL, " +
-                GOAL_COLUMN_DATE + " TEXT, " +
-                GOAL_COLUMN_ACTIVE + " INTEGER)");
+                GOAL_COLUMN_BREADTH + " REAL)");
 
         db.execSQL("CREATE TABLE " + TEST_TABLE_NAME +
                 "(" + TEST_COLUMN_ID + " INTEGER PRIMARY KEY, " +
@@ -208,23 +205,21 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     ///////////////////////////////////////////////////////////////////////
 
 ///////////////*Goal Tables Edits Here*//////////////////////
-    public boolean insertGoal(String name, double length, double breadth, String date, int active) {
+    public boolean insertGoal(String name, double length, double breadth) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GOAL_COLUMN_NAME, name);
         contentValues.put(GOAL_COLUMN_LENGTH, length);
         contentValues.put(GOAL_COLUMN_BREADTH, breadth);
-        contentValues.put(GOAL_COLUMN_DATE, date);
-        contentValues.put(GOAL_COLUMN_ACTIVE, active);
         db.insert(GOAL_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public int numberOfRows() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, GOAL_TABLE_NAME);
-        return numRows;
-    }
+//    public int numberOfRows() {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        int numRows = (int) DatabaseUtils.queryNumEntries(db, GOAL_TABLE_NAME);
+//        return numRows;
+//    }
 
 //    public boolean updateGoal( String oldName, String newName, int oldTarget, int newTarget, String units) {
 //        SQLiteDatabase db = this.getWritableDatabase();
@@ -247,19 +242,20 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         db.execSQL("delete from "+ GOAL_TABLE_NAME);
     }
 
-    public boolean checkGoalExists(String name, String date) {
+    public boolean checkGoalExists(String name) {
        boolean check = false;
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor cursor =  db.rawQuery("SELECT * FROM " + GOAL_TABLE_NAME + " WHERE " +
-                GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_DATE + " = ? ", new String[]{name,date});
+                GOAL_COLUMN_NAME + " = ? ", new String[]{name});
         cursor.moveToFirst();
         try {
-            String goalName = cursor.getString(1);
-            int steps = Integer.parseInt(cursor.getString(2));
-            int target = Integer.parseInt(cursor.getString(3));
-            String gdate = cursor.getString(4);
-            int active = Integer.parseInt(cursor.getString(5));
-            String units = cursor.getString(6);
+            String roomName = cursor.getString(1);
+//            int steps = Integer.parseInt(cursor.getString(2));
+//            int target = Integer.parseInt(cursor.getString(3));
+//            String gdate = cursor.getString(4);
+//            int active = Integer.parseInt(cursor.getString(5));
+//            String units = cursor.getString(6);
             check = true;
         } catch (Exception e){
 
@@ -268,26 +264,25 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         return check;
     }
 
-    public Goal getGoal(String name, String date) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery("SELECT * FROM " + GOAL_TABLE_NAME + " WHERE " +
-                GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_DATE + " = ? ", new String[]{name,date});
-        cursor.moveToFirst();
-        String goalName = cursor.getString(1);
-        int steps = Integer.parseInt(cursor.getString(2));
-        int target = Integer.parseInt(cursor.getString(3));
-        String gdate = cursor.getString(4);
-        int active = Integer.parseInt(cursor.getString(5));
-        String  units = cursor.getString(6);
+//    public Goal getGoal(String name, String date) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor =  db.rawQuery("SELECT * FROM " + GOAL_TABLE_NAME + " WHERE " +
+//                GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_DATE + " = ? ", new String[]{name,date});
+//        cursor.moveToFirst();
+//        String goalName = cursor.getString(1);
+//        int steps = Integer.parseInt(cursor.getString(2));
+//        int target = Integer.parseInt(cursor.getString(3));
+//        String gdate = cursor.getString(4);
+//        int active = Integer.parseInt(cursor.getString(5));
+//        String  units = cursor.getString(6);
+//
+//        Goal object = new Goal(name, steps, target, gdate, active, units );
+//        return object;
+//    }
 
-        Goal object = new Goal(name, steps, target, gdate, active, units );
-        return object;
-    }
-
-    public ArrayList<Room> getRoomsOnDate(String date) {
+    public ArrayList<Room> getRooms() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery("SELECT * FROM " + GOAL_TABLE_NAME + " WHERE " +
-                GOAL_COLUMN_DATE + " = ? AND " + GOAL_COLUMN_ACTIVE + " = ? "  , new String[]{date,Integer.toString(0)});
+        Cursor cursor =  db.rawQuery( "SELECT * FROM " + GOAL_TABLE_NAME, null );
         ArrayList<Room> rooms = new ArrayList<Room>();
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -297,48 +292,13 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 String name = cursor.getString(1);
                 double length = Integer.parseInt(cursor.getString(2));
                 double breadth = Integer.parseInt(cursor.getString(3));
-                String gdate = cursor.getString(4);
-                int active = Integer.parseInt(cursor.getString(5));
-               // String  units = cursor.getString(6);
-
-                Room object = new Room(name, length, breadth, gdate, active);
+                Room object = new Room(name, length, breadth);
                 // Adding contact to list
                 rooms.add(object);
             } while (cursor.moveToNext());
         }
         return rooms;
 
-    }
-
-    public Goal getActiveGoal(String date) {
-
-        String boop = GOAL_COLUMN_DATE + "=" + date;
-        int t = 1;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery("SELECT * FROM " + GOAL_TABLE_NAME + " WHERE " +
-                GOAL_COLUMN_ACTIVE + " = ? AND " + GOAL_COLUMN_DATE + " = ? ", new String[]{(Integer.toString(t)),date});
-        cursor.moveToFirst();
-        String name = cursor.getString(1);
-        int steps = Integer.parseInt(cursor.getString(2));
-        int target = Integer.parseInt(cursor.getString(3));
-        String gDate = cursor.getString(4);
-        int active = Integer.parseInt(cursor.getString(5));
-        String  units = cursor.getString(6);
-        Goal object = new Goal(name, steps, target, gDate, active, units );
-        return object;
-    }
-
-    public void setActiveGoal(String name, String date) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int k = 0, i = 1;
-        ContentValues ct = new ContentValues();
-        ct.put(GOAL_COLUMN_ACTIVE, k);
-        db.update(GOAL_TABLE_NAME, ct, GOAL_COLUMN_ACTIVE + " = ? AND " + GOAL_COLUMN_DATE +
-                " = ? ", new String[]{Integer.toString(i),date});
-        ContentValues args = new ContentValues();
-        args.put(GOAL_COLUMN_ACTIVE,i);
-        db.update(GOAL_TABLE_NAME, args, GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_DATE +
-                " = ? ", new String[]{name,date});
     }
 
 //    public void updateStepsforGoal(int steps, String name, String date) {
@@ -349,45 +309,5 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
 //
 //    }
 
-    public ArrayList<Goal> getHistory(String startDate, String endDate){
-       ArrayList<Goal> history = new ArrayList<Goal>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ GOAL_TABLE_NAME +
-                " WHERE " + GOAL_COLUMN_DATE +
-                " BETWEEN ?  AND ?", new String[]{startDate, endDate});
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                //the .getString(int x) method of the cursor returns the column
-                //of the table your query returned
-                String name = cursor.getString(1);
-                int steps = Integer.parseInt(cursor.getString(2));
-                int target = Integer.parseInt(cursor.getString(3));
-                String dates = cursor.getString(4);
-                int active = Integer.parseInt(cursor.getString(5));
-                String  units = cursor.getString(6);
-                Goal object = new Goal(name, steps, target, dates,active, units);
-                // Adding contact to list
-              if (active == 1){
-                history.add(object);}
 
-
-            } while (cursor.moveToNext());
-        }
-
-        return history;
-    }
-
-    public Cursor getInactiveGoals(){
-    int t = 0;
-    SQLiteDatabase db = this.getReadableDatabase();
-    Cursor cursor =  db.rawQuery("SELECT * FROM " + GOAL_TABLE_NAME + " WHERE " +
-            GOAL_COLUMN_ACTIVE + "=?", new String[]{(Integer.toString(t))});
-        return cursor;
-    }
-    public Cursor getAllGoals() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT * FROM " + GOAL_TABLE_NAME, null );
-        return res;
-    }
 }
