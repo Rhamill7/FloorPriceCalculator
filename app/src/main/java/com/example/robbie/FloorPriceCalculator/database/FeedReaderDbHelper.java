@@ -166,7 +166,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
             GOAL_COLUMN_NAME + " = ? ", new String[] { name });
     }
 
-    public void deleteAllGoals(){
+    public void deleteAllRooms(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from "+ GOAL_TABLE_NAME);
     }
@@ -214,8 +214,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 //the .getString(int x) method of the cursor returns the column
                 //of the table your query returned
                 String name = cursor.getString(1);
-                double length = Integer.parseInt(cursor.getString(2));
-                double breadth = Integer.parseInt(cursor.getString(3));
+                double length = Double.parseDouble(cursor.getString(2));
+                double breadth = Double.parseDouble(cursor.getString(3));
                 Room object = new Room(name, length, breadth);
                 // Adding contact to list
                 rooms.add(object);

@@ -1,9 +1,12 @@
 package com.example.robbie.FloorPriceCalculator.fragments;
 
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +69,37 @@ public class SettingsFragment extends Fragment {
                 } catch (Exception e){
                     Toast.makeText(getContext(), "Naw Coat!", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        deleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Are you sure you want to clear history?");
+                    builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int id) {
+                            db.deleteAllRooms();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    Dialog d = builder.create();
+                    d.show();
+
+
+
+                    Toast.makeText(getContext(), "Aye!", Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e){
+                    Toast.makeText(getContext(), "Naw m8!", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }
