@@ -1,4 +1,4 @@
-package com.example.robbie.fitnesstracker;
+package com.example.robbie.FloorPriceCalculator;
 
 /**
  * Created by Robbie on 08/02/2017.

@@ -1,41 +1,31 @@
-package com.example.robbie.fitnesstracker.fragments;
+package com.example.robbie.FloorPriceCalculator.fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.robbie.fitnesstracker.Room;
-import com.example.robbie.fitnesstracker.helpers.Conversion;
-import com.example.robbie.fitnesstracker.Goal;
-import com.example.robbie.fitnesstracker.database.FeedReaderDbHelper;
-import com.example.robbie.fitnesstracker.helpers.MyAdapter;
+import com.example.robbie.FloorPriceCalculator.helpers.MyAdapter;
+import com.example.robbie.FloorPriceCalculator.Room;
+import com.example.robbie.FloorPriceCalculator.database.FeedReaderDbHelper;
 import com.example.robbie.fitnesstracker.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +37,7 @@ public class RoomFragment extends Fragment {
     String roomName;
     double roomLength, roomBreadth;
     int currentSteps = 0, goalSteps = 0;
-    public Goal goal=null;
+   // public Goal goal=null;
     EditText length, breadth, roomName1;
     String date;
     Spinner s;
@@ -59,7 +49,7 @@ public class RoomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         boolean bool = false;
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("FitnessTracker - Goals");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Floor Price Calculator - Rooms");
         db = new FeedReaderDbHelper(getContext());
 
         try{
@@ -69,19 +59,9 @@ public class RoomFragment extends Fragment {
             db.initialiseSettings();
         }
 
-       if(db.testActive()){
-           try {
-               date = db.getDate();
-               ((AppCompatActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_title_black_18dp);
-           }
-           catch (Exception e){}
-       }
-       else{
-           date = getDateTime();
-       }
-        Toast.makeText(getContext(), date, Toast.LENGTH_LONG).show();
-        rootView = inflater.inflate(R.layout.fragment_goals, container, false);
-        ArrayList<Room> rooms = populateGoals();
+
+        rootView = inflater.inflate(R.layout.fragment_rooms, container, false);
+        ArrayList<Room> rooms = populateRooms();
        // getActiveGoal();
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         rv.setHasFixedSize(true);
@@ -108,36 +88,6 @@ public class RoomFragment extends Fragment {
         });
     }
 
-//    public void addSteps(){
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        LayoutInflater inflater = getActivity().getLayoutInflater();
-//        final View v =inflater.inflate(R.layout.add_step_dialog, null);
-//        builder.setView(v);
-//        steps = (EditText) v.findViewById(R.id.goalSteps2) ;
-//        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
-//            public void onClick(DialogInterface dialog, int id) {
-//                try{
-//                currentSteps = db.getActiveGoal(date).getSteps() + (Integer.parseInt(steps.getText().toString()));
-//                CardView cv = (CardView) rootView.findViewById(R.id.card_view_active);
-//                TextView current = (TextView) cv.findViewById(R.id.currentSteps5);
-//                current.setText(Integer.toString(currentSteps));
-//                    db.updateStepsforGoal(currentSteps, db.getActiveGoal(date).getName(), date);
-//                    getActiveGoal();
-//
-//                }
-//                catch (Exception e){
-//                    Toast.makeText(getContext(), "Please enter No. of Steps", Toast.LENGTH_LONG).show();
-//                }
-//              }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-//            public void onClick(DialogInterface dialog, int id) {
-//                dialog.dismiss();
-//            }
-//        });
-//        Dialog d = builder.create();
-//        d.show();
-//        }
 
     public void addGoal(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -167,7 +117,7 @@ public class RoomFragment extends Fragment {
                 } catch (Exception e){
                     Toast.makeText(getContext(), "Please Enter a Name and/or Step Goal", Toast.LENGTH_LONG).show();
                 }
-                ArrayList<Room> rooms = populateGoals();
+                ArrayList<Room> rooms = populateRooms();
                 MyAdapter adapter = new MyAdapter( rooms, getContext());
                 rv.setAdapter(adapter);
                 rv.invalidate();
@@ -210,25 +160,12 @@ public class RoomFragment extends Fragment {
 //        }
 //    }
 
-    public ArrayList<Room> populateGoals(){
+    public ArrayList<Room> populateRooms(){
         ArrayList<Room> rooms = db.getRooms();
 
         return rooms;
     }
 
-    public void notification(){
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(getContext())
-                        .setSmallIcon(R.drawable.ic_directions_run_white_18dp)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
-        int mNotificationId = 001;
-// Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-// Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
-    }
 
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(

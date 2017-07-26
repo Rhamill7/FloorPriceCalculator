@@ -1,4 +1,4 @@
-package com.example.robbie.fitnesstracker;
+package com.example.robbie.FloorPriceCalculator;
 
 import android.app.FragmentManager;
 import android.content.Context;
@@ -12,8 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.robbie.fitnesstracker.fragments.RoomFragment;
-import com.example.robbie.fitnesstracker.fragments.SettingsFragment;
+import com.example.robbie.FloorPriceCalculator.fragments.RoomFragment;
+import com.example.robbie.FloorPriceCalculator.fragments.SettingsFragment;
+import com.example.robbie.fitnesstracker.R;
 
 public class SummaryScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{

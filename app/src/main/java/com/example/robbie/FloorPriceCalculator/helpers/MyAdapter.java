@@ -1,32 +1,24 @@
-package com.example.robbie.fitnesstracker.helpers;
+package com.example.robbie.FloorPriceCalculator.helpers;
 
 /**
  * Created by Robbie on 11/02/2017.
  */
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.*;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.robbie.fitnesstracker.Goal;
 import com.example.robbie.fitnesstracker.R;
-import com.example.robbie.fitnesstracker.Room;
-import com.example.robbie.fitnesstracker.database.FeedReaderDbHelper;
+import com.example.robbie.FloorPriceCalculator.Room;
+import com.example.robbie.FloorPriceCalculator.database.FeedReaderDbHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,22 +78,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         boolean bool = false;
-        try{
-           bool  = holder.db.testActive();
-        }
-        catch(Exception e){
-            //holder.db.insertTest(getDateTime(), 0);
-        }
 
-        if(bool){
-            try {
-                date = holder.db.getDate();
-            }
-            catch (Exception e){}
-        }
-        else{
-            date = getDateTime();
-        }
 //        String units = holder.db.getUnits();
 //        if (!units.equals("Default")){
 //            goals.get(position).setUnits(units);

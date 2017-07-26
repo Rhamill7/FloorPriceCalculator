@@ -1,19 +1,14 @@
-package com.example.robbie.fitnesstracker.database;
+package com.example.robbie.FloorPriceCalculator.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import com.example.robbie.fitnesstracker.Goal;
-import com.example.robbie.fitnesstracker.Room;
+import com.example.robbie.FloorPriceCalculator.Room;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by Robbie on 09/02/2017.
@@ -26,7 +21,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
   //  public static final int DATABASE_VERSION = 1;
    // public static final String DATABASE_NAME = "FeedReader.db";
     public static final String DATABASE_NAME = "SQLiteExample.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     public static final String GOAL_TABLE_NAME = "goal";
     public static final String GOAL_COLUMN_ID = "_id";
     public static final String GOAL_COLUMN_NAME = "name";
@@ -37,11 +32,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     public static final String TEST_TABLE_NAME = "test";
     public static final String TEST_COLUMN_ID = "_id";
     public static final String TEST_COLUMN_NAME = "name";
-    public static final String TEST_COLUMN_DATE = "date";
-    public static final String TEST_COLUMN_ACTIVE = "active";
-    public static final String TEST_COLUMN_UNITS = "units";
-    public static final String TEST_COLUMN_EDIT = "editable";
-    public static final String TEST_COLUMN_STRIDE = "stride";
+    public static final String TEST_COLUMN_WOOD = "wood";
+    public static final String TEST_COLUMN_COAT = "coat";
     public static final String TEST_COLUMN_INIT = "init";        ;
 
 
@@ -58,11 +50,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TEST_TABLE_NAME +
                 "(" + TEST_COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 TEST_COLUMN_NAME + " TEXT, " +
-                TEST_COLUMN_DATE + " TEXT, " +
-                TEST_COLUMN_ACTIVE + " INTEGER, " +
-                TEST_COLUMN_UNITS + " TEXT, " +
-                TEST_COLUMN_EDIT + " INTEGER, " +
-                TEST_COLUMN_STRIDE+ " REAL, " +
+                TEST_COLUMN_WOOD + " REAL, " +
+                TEST_COLUMN_COAT+ " REAL, " +
                 TEST_COLUMN_INIT + " INTEGER)");
 
     }
@@ -83,72 +72,47 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TEST_COLUMN_NAME, "Test");
-        contentValues.put(TEST_COLUMN_DATE, "None");
-        contentValues.put(TEST_COLUMN_ACTIVE, 0);
-        contentValues.put(TEST_COLUMN_UNITS, "Default");
-        contentValues.put(TEST_COLUMN_EDIT, 1);
-        contentValues.put(TEST_COLUMN_STRIDE, 0.5);
+        contentValues.put(TEST_COLUMN_WOOD, 1);
+        contentValues.put(TEST_COLUMN_COAT, 1);
         contentValues.put(TEST_COLUMN_INIT, 1);
 
         db.insert(TEST_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public void setUnits(String units) {
+    public void setWoodPrice(double woodPrice) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(TEST_COLUMN_UNITS,units);
+        args.put(TEST_COLUMN_WOOD,woodPrice);
         // args.put(TEST_COLUMN_ACTIVE, active);
         db.update(TEST_TABLE_NAME, args, TEST_COLUMN_NAME + " = ? ", new String[]{"Test"});
     }
 
-    public String getUnits() {
+    public double getWoodPrice() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        String act = cursor.getString(4);
+        double act = Double.parseDouble(cursor.getString(2));
         return act;
     }
-    public void setStride(double stride) {
+
+
+    public void setCoatPrice(double coatPrice) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(TEST_COLUMN_STRIDE,stride);
+        args.put(TEST_COLUMN_COAT,coatPrice);
         // args.put(TEST_COLUMN_ACTIVE, active);
         db.update(TEST_TABLE_NAME, args, TEST_COLUMN_NAME + " = ? ", new String[]{"Test"});
     }
 
-    public double getStride() {
+    public double getCoatPrice() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Integer.parseInt(cursor.getString(6));
+        double act = Double.parseDouble(cursor.getString(3));
         return act;
-    }
-    public void updateUnits(String units) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues args = new ContentValues();
-        args.put(TEST_COLUMN_UNITS,units);
-      // args.put(TEST_COLUMN_ACTIVE, active);
-        db.update(TEST_TABLE_NAME, args, TEST_COLUMN_NAME + " = ? ", new String[]{"Test"});
-
-    }
-
-    public void updateEditable(int edit) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues args = new ContentValues();
-        args.put(TEST_COLUMN_EDIT,edit);
-        db.update(TEST_TABLE_NAME, args, TEST_COLUMN_NAME + " = ? ", new String[]{"Test"});
-
-    }
-    public void updateTestMode(String date, int active) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues args = new ContentValues();
-        args.put(TEST_COLUMN_DATE,date);
-        args.put(TEST_COLUMN_ACTIVE, active);
-        db.update(TEST_TABLE_NAME, args, TEST_COLUMN_NAME + " = ? ", new String[]{"Test"});
-
     }
 
     public boolean testInit() {
@@ -157,39 +121,10 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        int act = Integer.parseInt(cursor.getString(7));
+        int act = Integer.parseInt(cursor.getString(4));
         if (act == 1){
             bool = true;
         }
-        return bool;
-    }
-    public boolean testEditable() {
-        boolean bool = false;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
-                TEST_COLUMN_NAME + "=?", new String[]{"Test"});
-        cursor.moveToFirst();
-        int act = Integer.parseInt(cursor.getString(5));
-        //     Log.d("HERE", Integer.toString(act));
-        if (act == 1){
-            bool = true;
-        }
-        return bool;
-    }
-
-    public boolean testActive() {
-       boolean bool = false;
-       SQLiteDatabase db = this.getReadableDatabase();
-       Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
-                TEST_COLUMN_NAME + "=?", new String[]{"Test"});
-       cursor.moveToFirst();
-        //String id = cursor.getString()
-       //String date = cursor.getString(2);
-       int act = Integer.parseInt(cursor.getString(3));
-   //     Log.d("HERE", Integer.toString(act));
-       if (act == 1){
-         bool = true;
-       }
         return bool;
     }
 
@@ -214,12 +149,6 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         db.insert(GOAL_TABLE_NAME, null, contentValues);
         return true;
     }
-
-//    public int numberOfRows() {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        int numRows = (int) DatabaseUtils.queryNumEntries(db, GOAL_TABLE_NAME);
-//        return numRows;
-//    }
 
 //    public boolean updateGoal( String oldName, String newName, int oldTarget, int newTarget, String units) {
 //        SQLiteDatabase db = this.getWritableDatabase();
@@ -251,11 +180,6 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         try {
             String roomName = cursor.getString(1);
-//            int steps = Integer.parseInt(cursor.getString(2));
-//            int target = Integer.parseInt(cursor.getString(3));
-//            String gdate = cursor.getString(4);
-//            int active = Integer.parseInt(cursor.getString(5));
-//            String units = cursor.getString(6);
             check = true;
         } catch (Exception e){
 
@@ -300,14 +224,4 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         return rooms;
 
     }
-
-//    public void updateStepsforGoal(int steps, String name, String date) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues args = new ContentValues();
-//        args.put(GOAL_COLUMN_STEPS,steps);
-//        db.update(GOAL_TABLE_NAME, args, GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_DATE + " = ? ", new String[]{name,date});
-//
-//    }
-
-
 }
