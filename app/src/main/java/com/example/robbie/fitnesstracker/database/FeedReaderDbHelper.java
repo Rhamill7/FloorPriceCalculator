@@ -25,15 +25,14 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
   //  public static final int DATABASE_VERSION = 1;
    // public static final String DATABASE_NAME = "FeedReader.db";
     public static final String DATABASE_NAME = "SQLiteExample.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     public static final String GOAL_TABLE_NAME = "goal";
     public static final String GOAL_COLUMN_ID = "_id";
     public static final String GOAL_COLUMN_NAME = "name";
-    public static final String GOAL_COLUMN_STEPS = "steps";
-    public static final String GOAL_COLUMN_TARGET = "target";
+    public static final String GOAL_COLUMN_LENGTH = "length";
+    public static final String GOAL_COLUMN_BREADTH = "breadth";
     public static final String GOAL_COLUMN_DATE = "date";
     public static final String GOAL_COLUMN_ACTIVE = "active";
-    public static final String GOAL_COLUMN_UNITS = "units";
 
     public static final String TEST_TABLE_NAME = "test";
     public static final String TEST_COLUMN_ID = "_id";
@@ -53,11 +52,10 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + GOAL_TABLE_NAME +
                 "(" + GOAL_COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 GOAL_COLUMN_NAME + " TEXT, " +
-                GOAL_COLUMN_STEPS + " INTEGER, " +
-                GOAL_COLUMN_TARGET + " INTEGER, " +
+                GOAL_COLUMN_LENGTH + " REAL, " +
+                GOAL_COLUMN_BREADTH + " REAL, " +
                 GOAL_COLUMN_DATE + " TEXT, " +
-                GOAL_COLUMN_ACTIVE + " INTEGER, " +
-                GOAL_COLUMN_UNITS + " TEXT)");
+                GOAL_COLUMN_ACTIVE + " INTEGER)");
 
         db.execSQL("CREATE TABLE " + TEST_TABLE_NAME +
                 "(" + TEST_COLUMN_ID + " INTEGER PRIMARY KEY, " +
@@ -209,15 +207,14 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     ///////////////////////////////////////////////////////////////////////
 
 ///////////////*Goal Tables Edits Here*//////////////////////
-    public boolean insertGoal(String name, int steps, int target, String date, int active, String units) {
+    public boolean insertGoal(String name, double length, double breadth, String date, int active) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GOAL_COLUMN_NAME, name);
-        contentValues.put(GOAL_COLUMN_STEPS, steps);
-        contentValues.put(GOAL_COLUMN_TARGET, target);
+        contentValues.put(GOAL_COLUMN_LENGTH, length);
+        contentValues.put(GOAL_COLUMN_BREADTH, breadth);
         contentValues.put(GOAL_COLUMN_DATE, date);
         contentValues.put(GOAL_COLUMN_ACTIVE, active);
-        contentValues.put(GOAL_COLUMN_UNITS, units);
         db.insert(GOAL_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -228,15 +225,15 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateGoal( String oldName, String newName, int oldTarget, int newTarget, String units) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues args = new ContentValues();
-        args.put(GOAL_COLUMN_NAME,newName);
-        args.put(GOAL_COLUMN_TARGET, newTarget);
-        args.put(GOAL_COLUMN_UNITS, units);
-        db.update(GOAL_TABLE_NAME, args, GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_TARGET + " = ? ", new String[]{oldName, Integer.toString(oldTarget)});
-        return true;
-    }
+//    public boolean updateGoal( String oldName, String newName, int oldTarget, int newTarget, String units) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues args = new ContentValues();
+//        args.put(GOAL_COLUMN_NAME,newName);
+//        args.put(GOAL_COLUMN_TARGET, newTarget);
+//        args.put(GOAL_COLUMN_UNITS, units);
+//        db.update(GOAL_TABLE_NAME, args, GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_TARGET + " = ? ", new String[]{oldName, Integer.toString(oldTarget)});
+//        return true;
+//    }
 
     public void deleteGoal(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -343,13 +340,13 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 " = ? ", new String[]{name,date});
     }
 
-    public void updateStepsforGoal(int steps, String name, String date) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues args = new ContentValues();
-        args.put(GOAL_COLUMN_STEPS,steps);
-        db.update(GOAL_TABLE_NAME, args, GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_DATE + " = ? ", new String[]{name,date});
-
-    }
+//    public void updateStepsforGoal(int steps, String name, String date) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues args = new ContentValues();
+//        args.put(GOAL_COLUMN_STEPS,steps);
+//        db.update(GOAL_TABLE_NAME, args, GOAL_COLUMN_NAME + " = ? AND " + GOAL_COLUMN_DATE + " = ? ", new String[]{name,date});
+//
+//    }
 
     public ArrayList<Goal> getHistory(String startDate, String endDate){
        ArrayList<Goal> history = new ArrayList<Goal>();

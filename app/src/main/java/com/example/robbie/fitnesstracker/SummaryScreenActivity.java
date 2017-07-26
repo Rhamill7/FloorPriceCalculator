@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.robbie.fitnesstracker.fragments.GoalsFragment;
+import com.example.robbie.fitnesstracker.fragments.RoomFragment;
 import com.example.robbie.fitnesstracker.fragments.HistoryFragment;
 import com.example.robbie.fitnesstracker.fragments.SettingsFragment;
 import com.example.robbie.fitnesstracker.fragments.StatisticsFragment;
@@ -38,8 +38,8 @@ public class SummaryScreenActivity extends AppCompatActivity
 
 
        FragmentManager manager = getFragmentManager();
-        GoalsFragment goalsFragment = new GoalsFragment();
-        manager.beginTransaction().replace(R.id.content_summary_screen, goalsFragment, goalsFragment.getTag()).commit();
+        RoomFragment roomFragment = new RoomFragment();
+        manager.beginTransaction().replace(R.id.content_summary_screen, roomFragment, roomFragment.getTag()).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -68,9 +68,9 @@ public class SummaryScreenActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_summary) {
-            GoalsFragment goalsFragment = new GoalsFragment();
+            RoomFragment roomFragment = new RoomFragment();
             FragmentManager manager = getFragmentManager();
-            manager.beginTransaction().replace(R.id.content_summary_screen, goalsFragment, goalsFragment.getTag()).commit();
+            manager.beginTransaction().replace(R.id.content_summary_screen, roomFragment, roomFragment.getTag()).commit();
         } else if (id == R.id.nav_history) {
             HistoryFragment historyFragment = new HistoryFragment();
             FragmentManager manager = getFragmentManager();
