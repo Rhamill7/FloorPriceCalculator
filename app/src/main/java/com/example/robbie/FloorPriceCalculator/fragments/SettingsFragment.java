@@ -3,6 +3,7 @@ package com.example.robbie.FloorPriceCalculator.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -48,6 +49,7 @@ public class SettingsFragment extends Fragment {
         editWood = (EditText)  view.findViewById(R.id.editText4);
         editCoat = (EditText)  view.findViewById(R.id.editText3);
         Button pricesButton = (Button) view.findViewById(R.id.button);
+        Button shareButton = (Button) view.findViewById(R.id.buttonShare);
         Button deleteAll = (Button) view.findViewById(R.id.button2);
         editWood.setText(Double.toString(db.getWoodPrice()));
         editCoat.setText(Double.toString(db.getCoatPrice()));
@@ -68,6 +70,22 @@ public class SettingsFragment extends Fragment {
                     db.setCoatPrice(tempCoat);
                 } catch (Exception e){
                     Toast.makeText(getContext(), "Naw Coat!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
+                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
