@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -21,7 +23,10 @@ import com.example.robbie.FloorPriceCalculator.Room;
 import com.example.robbie.fitnesstracker.R;
 import com.example.robbie.FloorPriceCalculator.database.FeedReaderDbHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -34,6 +39,7 @@ public class SettingsFragment extends Fragment {
     public Boolean testMode, goalsEditable;
     EditText editWood;
     EditText editCoat;
+    boolean woodCheck =false, coatCheck = false;
     public SettingsFragment() {
 
     }
@@ -54,8 +60,26 @@ public class SettingsFragment extends Fragment {
         Button pricesButton = (Button) view.findViewById(R.id.button);
         Button shareButton = (Button) view.findViewById(R.id.buttonShare);
         Button deleteAll = (Button) view.findViewById(R.id.button2);
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+        CheckBox checkBox2 = (CheckBox) view.findViewById(R.id.checkBox2);
         editWood.setText(Double.toString(db.getWoodPrice()));
         editCoat.setText(Double.toString(db.getCoatPrice()));
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                woodCheck = true;
+
+            }
+        });
+
+        checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                coatCheck = true;
+
+            }
+        });
 
         pricesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +105,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String output = "";
+
                 ArrayList<Room> rooms = db.getRooms();
                 Double area = 0.0;
                 for (int i = 0; i<rooms.size(); i++){
@@ -93,13 +118,15 @@ public class SettingsFragment extends Fragment {
                 }
                 Double totalPrice = area* (db.getWoodPrice());
                 Double totalCoatPrice = totalPrice * (db.getCoatPrice());
-                output = output + "\n " + "Total Area: " + area
-                        + "\n Total Cost: " + totalPrice
-                        + "\n Total Cost with Coating " + totalCoatPrice;
+                output = output + "\n " + "Total Area: " + area;
+                if (woodCheck == (true)){
+                        output = output + "\n Total Cost: " + totalPrice;}
+                if (coatCheck == true){
+                        output = output + "\n Total Cost with Coating " + totalCoatPrice;}
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
-                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"roblin@blueyonder.co.uk"});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Job Pricing " + getDateTime() );
               //  i.putExtra(Intent.EXTRA_TEXT   , "body of email");
                 i.putExtra(Intent.EXTRA_TEXT   , output);
                 try {
@@ -142,5 +169,12 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                // "yyyy-MM-dd HH:mm:ss", Locale.getDefault();
+                //"yyyy-MM-dd"
+                "dd-MM-yyy", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date).toString();
+    }
 }
