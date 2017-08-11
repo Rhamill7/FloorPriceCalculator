@@ -17,8 +17,11 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.robbie.FloorPriceCalculator.Room;
 import com.example.robbie.fitnesstracker.R;
 import com.example.robbie.FloorPriceCalculator.database.FeedReaderDbHelper;
+
+import java.util.ArrayList;
 
 
 /**
@@ -77,11 +80,28 @@ public class SettingsFragment extends Fragment {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String output = "";
+                ArrayList<Room> rooms = db.getRooms();
+                Double area = 0.0;
+                for (int i = 0; i<rooms.size(); i++){
+                    Double roomArea = (rooms.get(i).getLength() * rooms.get(i).getBreadth());
+                    area = area + roomArea;
+                    output = output + "\n" + "Name: " + rooms.get(i).getName()
+                            + "\n Length: " + rooms.get(i).getLength()
+                            + "\n Breadth: " + rooms.get(i).getBreadth()
+                            + "\n Room Area: " + roomArea + "\n";
+                }
+                Double totalPrice = area* (db.getWoodPrice());
+                Double totalCoatPrice = totalPrice * (db.getCoatPrice());
+                output = output + "\n " + "Total Area: " + area
+                        + "\n Total Cost: " + totalPrice
+                        + "\n Total Cost with Coating " + totalCoatPrice;
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
                 i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+              //  i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                i.putExtra(Intent.EXTRA_TEXT   , output);
                 try {
                     startActivity(Intent.createChooser(i, "Send mail..."));
                 } catch (android.content.ActivityNotFoundException ex) {
