@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.robbie.FloorPriceCalculator.Room;
+import com.example.robbie.FloorPriceCalculator.helpers.MyAdapter;
 import com.example.robbie.fitnesstracker.R;
 import com.example.robbie.FloorPriceCalculator.database.FeedReaderDbHelper;
 
@@ -38,8 +40,11 @@ public class SettingsFragment extends Fragment {
     public String date;
     public Boolean testMode, goalsEditable;
     EditText editWood;
-    EditText editCoat;
+    EditText editCoat, customerName;
+    EditText extraName, extraCost;
     boolean woodCheck =false, coatCheck = false;
+    ArrayList<Double> extraCosts;
+    ArrayList<String> extraNames;
     public SettingsFragment() {
 
     }
@@ -57,13 +62,20 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         editWood = (EditText)  view.findViewById(R.id.editText4);
         editCoat = (EditText)  view.findViewById(R.id.editText3);
+        customerName = (EditText) view.findViewById(R.id.editText7);
+
         Button pricesButton = (Button) view.findViewById(R.id.button);
         Button shareButton = (Button) view.findViewById(R.id.buttonShare);
         Button deleteAll = (Button) view.findViewById(R.id.button2);
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         CheckBox checkBox2 = (CheckBox) view.findViewById(R.id.checkBox2);
+        Button checkBoxOther = (Button) view.findViewById(R.id.buttonAddMore);
         editWood.setText(Double.toString(db.getWoodPrice()));
         editCoat.setText(Double.toString(db.getCoatPrice()));
+        extraCosts = new ArrayList<Double>();
+        extraNames = new ArrayList<String>();
+
+
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -78,6 +90,13 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 coatCheck = true;
 
+            }
+        });
+
+        checkBoxOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCosts();
             }
         });
 
@@ -118,15 +137,23 @@ public class SettingsFragment extends Fragment {
                 }
                 Double totalPrice = area* (db.getWoodPrice());
                 Double totalCoatPrice = totalPrice * (db.getCoatPrice());
+                Double totalCostPlusExtras = totalPrice;
                 output = output + "\n " + "Total Area: " + area;
                 if (woodCheck == (true)){
                         output = output + "\n Total Cost: " + totalPrice;}
                 if (coatCheck == true){
                         output = output + "\n Total Cost with Coating " + totalCoatPrice;}
+                if (!extraCosts.isEmpty()){
+                   
+                    for (int n =0; n<extraCosts.size(); n++){
+                        totalCostPlusExtras = totalCostPlusExtras * extraCosts.get(n);
+                    }
+
+                    output = output + "\n Total Cost with Extras " + totalCoatPrice;}
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"roblin@blueyonder.co.uk"});
-                i.putExtra(Intent.EXTRA_SUBJECT, "Job Pricing " + getDateTime() );
+                i.putExtra(Intent.EXTRA_SUBJECT, customerName.getText().toString() + " Job Pricing " + getDateTime() );
               //  i.putExtra(Intent.EXTRA_TEXT   , "body of email");
                 i.putExtra(Intent.EXTRA_TEXT   , output);
                 try {
@@ -177,4 +204,46 @@ public class SettingsFragment extends Fragment {
         Date date = new Date();
         return dateFormat.format(date).toString();
     }
+    public void addCosts(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View v =inflater.inflate(R.layout.add_step_dialog, null);
+        builder.setView(v);
+        extraName = (EditText) v.findViewById(R.id.extraName);
+
+        extraCost  = (EditText) v.findViewById(R.id.extraAmount);
+
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id) {
+//                RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+//                rv.setHasFixedSize(true);
+                try{
+                    String extraNameN = extraName.getText().toString();
+                    String temp = extraCost.getText().toString();
+                    Double extraCostValue = Double.parseDouble(temp);
+                    extraCosts.add(extraCostValue);
+                    extraNames.add(extraNameN);
+//                    if(db.checkGoalExists(roomName)){
+//                        Toast.makeText(getContext(), "This room already Exists!", Toast.LENGTH_LONG).show();
+//                    }else {
+//                        db.insertGoal(roomName, roomLength, roomBreadth);
+//                    }
+                } catch (Exception e){
+                    Toast.makeText(getContext(), "Please Enter a Name and/or Cost per meter squared", Toast.LENGTH_LONG).show();
+                }
+           //     ArrayList<Room> rooms = populateRooms();
+//                MyAdapter adapter = new MyAdapter( rooms, getContext());
+//                rv.setAdapter(adapter);
+//                rv.invalidate();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        Dialog d = builder.create();
+        d.show();
+    }
+
 }

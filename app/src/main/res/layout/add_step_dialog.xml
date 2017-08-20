@@ -16,7 +16,7 @@
 
     <TextView
 
-        android:text="Add Steps"
+        android:text="Add Extras"
         android:textColor="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="23dp"
@@ -29,8 +29,8 @@
 
 
     <EditText
-        android:id="@+id/goalSteps2"
-        android:inputType="number"
+        android:id="@+id/extraName"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -38,6 +38,19 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
-        android:hint="Target Number of Steps"/>
+        android:hint="Name of Item"/>
+
+    <EditText
+        android:id="@+id/extraAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="0.38"
+        android:fontFamily="sans-serif"
+        android:hint="Cost of Item per meter squared: eg 10"
+        android:inputType="numberDecimal" />
 
 </LinearLayout>

@@ -12,10 +12,10 @@
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cost for Coating (£)"
-            android:textAppearance="?android:textAppearanceLarge"
             android:layout_alignBottom="@+id/editText4"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:text="Cost for Coating (£)"
+            android:textAppearance="?android:textAppearanceLarge" />
 
         <EditText
             android:id="@+id/editText3"
@@ -32,68 +32,98 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cost for wood (£)"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_below="@+id/editText4"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="41dp" />
+            android:layout_below="@+id/editText4"
+            android:layout_marginTop="41dp"
+            android:text="Cost for wood (£)"
+            android:textAppearance="?android:textAppearanceLarge" />
 
         <EditText
             android:id="@+id/editText4"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="19dp"
             android:ems="10"
             android:hint="10.50"
-            android:inputType="numberDecimal"
-            android:layout_marginEnd="40dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="19dp" />
+            android:inputType="numberDecimal" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Confirm Prices"
-            android:layout_above="@+id/buttonShare"
+            android:layout_below="@+id/editText3"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginTop="17dp" />
+
+        <EditText
+            android:id="@+id/editText7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Customer Name"
+            android:inputType="text"
+            android:layout_below="@+id/checkBox2"
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/buttonShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Share button"
-            android:layout_above="@+id/button2"
+            android:layout_below="@+id/editText7"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="63dp" />
+            android:layout_marginTop="22dp" />
+
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete All Rooms"
-            android:layout_marginBottom="19dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="19dp"
+            android:text="Delete All Rooms" />
 
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
             android:text="Wood"
-            android:layout_marginTop="21dp"
-            android:layout_below="@+id/editText3"
-            android:layout_alignParentStart="true" />
+            android:layout_marginStart="24dp"
+            android:layout_below="@+id/button"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="13dp" />
 
         <CheckBox
             android:id="@+id/checkBox2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Coating"
+
             android:layout_below="@+id/checkBox"
             android:layout_alignStart="@+id/checkBox"
-            android:layout_marginTop="18dp" />
+            android:layout_marginTop="15dp" />
+
+        <CheckBox
+            android:id="@+id/checkBoxOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add more"
+            android:layout_alignBaseline="@+id/checkBox"
+            android:layout_alignBottom="@+id/checkBox"
+            android:layout_alignEnd="@+id/editText3"
+            android:layout_marginEnd="22dp" />
+
+        <Button
+            android:id="@+id/buttonAddMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add more"
+            android:layout_alignBaseline="@+id/checkBox2"
+            android:layout_alignBottom="@+id/checkBox2"
+            android:layout_alignEnd="@+id/checkBoxOther" />
 
 
     </RelativeLayout>
