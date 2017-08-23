@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.robbie.FloorPriceCalculator.fragments.PricesFragment;
 import com.example.robbie.FloorPriceCalculator.fragments.RoomFragment;
 import com.example.robbie.FloorPriceCalculator.fragments.SettingsFragment;
 import com.example.robbie.fitnesstracker.R;
@@ -73,6 +74,10 @@ public class SummaryScreenActivity extends AppCompatActivity
             SettingsFragment settingsFragment = new SettingsFragment();
            FragmentManager manager = getFragmentManager();
            manager.beginTransaction().replace(R.id.content_summary_screen, settingsFragment, settingsFragment.getTag()).commit();
+        }  else if (id == R.id.nav_prices) {
+            PricesFragment pricesFragment = new PricesFragment();
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction().replace(R.id.content_summary_screen, pricesFragment, pricesFragment.getTag()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

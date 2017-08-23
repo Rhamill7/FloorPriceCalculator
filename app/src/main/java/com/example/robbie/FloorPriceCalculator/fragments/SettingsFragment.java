@@ -64,14 +64,11 @@ public class SettingsFragment extends Fragment {
         editCoat = (EditText)  view.findViewById(R.id.editText3);
         customerName = (EditText) view.findViewById(R.id.editText7);
 
-        Button pricesButton = (Button) view.findViewById(R.id.button);
         Button shareButton = (Button) view.findViewById(R.id.buttonShare);
         Button deleteAll = (Button) view.findViewById(R.id.button2);
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         CheckBox checkBox2 = (CheckBox) view.findViewById(R.id.checkBox2);
         Button checkBoxOther = (Button) view.findViewById(R.id.buttonAddMore);
-        editWood.setText(Double.toString(db.getWoodPrice()));
-        editCoat.setText(Double.toString(db.getCoatPrice()));
         extraCosts = new ArrayList<Double>();
         extraNames = new ArrayList<String>();
 
@@ -100,25 +97,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        pricesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try{
-                    Double tempWood = Double.parseDouble(editWood.getText().toString());
-                    db.setWoodPrice(tempWood);
-                    Toast.makeText(getContext(), "Aye!", Toast.LENGTH_LONG).show();
-                }
-                catch (Exception e){
-                    Toast.makeText(getContext(), "Naw wood!", Toast.LENGTH_LONG).show();
-                }
-                try{
-                    Double tempCoat = Double.parseDouble(editCoat.getText().toString());
-                    db.setCoatPrice(tempCoat);
-                } catch (Exception e){
-                    Toast.makeText(getContext(), "Naw Coat!", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
 
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +122,7 @@ public class SettingsFragment extends Fragment {
                 if (coatCheck == true){
                         output = output + "\n Total Cost with Coating " + totalCoatPrice;}
                 if (!extraCosts.isEmpty()){
-                   
+
                     for (int n =0; n<extraCosts.size(); n++){
                         totalCostPlusExtras = totalCostPlusExtras * extraCosts.get(n);
                     }
