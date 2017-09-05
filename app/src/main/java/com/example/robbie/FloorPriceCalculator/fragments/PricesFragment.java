@@ -34,8 +34,7 @@ public class PricesFragment extends Fragment {
     FeedReaderDbHelper db;
     public String date;
     public Boolean testMode, goalsEditable;
-    EditText editWood;
-    EditText editCoat, customerName;
+    EditText sandAndFinish, repAndDoors, pine, hardWood;
     EditText extraName, extraCost;
     boolean woodCheck =false, coatCheck = false;
     ArrayList<Double> extraCosts;
@@ -57,29 +56,44 @@ public class PricesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        editWood = (EditText)  view.findViewById(R.id.editText4);
-        editCoat = (EditText)  view.findViewById(R.id.editText3);
-        customerName = (EditText) view.findViewById(R.id.editText7);
+        sandAndFinish = (EditText)  view.findViewById(R.id.editText3);
+        repAndDoors = (EditText)  view.findViewById(R.id.editText4);
+        pine = (EditText)  view.findViewById(R.id.editText9);
+        hardWood = (EditText) view.findViewById(R.id.editText10);
 
         Button pricesButton = (Button) view.findViewById(R.id.button);
-        editWood.setText(Double.toString(db.getWoodPrice()));
-        editCoat.setText(Double.toString(db.getCoatPrice()));
+        sandAndFinish.setText(Double.toString(db.getSafPrice()));
+        repAndDoors.setText(Double.toString(db.getRadPrice()));
+        pine.setText(Double.toString(db.getPinePrice()));
+        hardWood.setText(Double.toString(db.getHardPrice()));
 
 
         pricesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try{
-                    Double tempWood = Double.parseDouble(editWood.getText().toString());
-                    db.setWoodPrice(tempWood);
+                    Double tempWood = Double.parseDouble(sandAndFinish.getText().toString());
+                    db.setSafPrice(tempWood);
                     Toast.makeText(getContext(), "Aye!", Toast.LENGTH_LONG).show();
                 }
                 catch (Exception e){
                     Toast.makeText(getContext(), "Naw wood!", Toast.LENGTH_LONG).show();
                 }
                 try{
-                    Double tempCoat = Double.parseDouble(editCoat.getText().toString());
-                    db.setCoatPrice(tempCoat);
+                    Double tempCoat = Double.parseDouble(repAndDoors.getText().toString());
+                    db.setRadPrice(tempCoat);
+                } catch (Exception e){
+                    Toast.makeText(getContext(), "Naw Coat!", Toast.LENGTH_LONG).show();
+                }
+                try{
+                    Double tempCoat = Double.parseDouble(pine.getText().toString());
+                    db.setPinePrice(tempCoat);
+                } catch (Exception e){
+                    Toast.makeText(getContext(), "Naw Coat!", Toast.LENGTH_LONG).show();
+                }
+                try{
+                    Double tempCoat = Double.parseDouble(hardWood.getText().toString());
+                    db.setHardPrice(tempCoat);
                 } catch (Exception e){
                     Toast.makeText(getContext(), "Naw Coat!", Toast.LENGTH_LONG).show();
                 }

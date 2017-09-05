@@ -180,8 +180,8 @@ public class RoomFragment extends Fragment {
         for (int i = 0; i<rooms.size(); i++){
             area = area + (rooms.get(i).getLength() * rooms.get(i).getBreadth());
         }
-        Double totalPrice = area* (db.getWoodPrice());
-        Double totalCoatPrice = totalPrice * (db.getCoatPrice());
+        Double totalPrice = area* (db.getSafPrice());
+       // Double totalCoatPrice = totalPrice * (db.getCoatPrice());
       //  CardView cv = (CardView) rootView.findViewById(R.id.card_view_active);
         TextView current = (TextView) this.getView().findViewById(R.id.textView5);
       //  TextView totalPriceText = (TextView) this.getView().findViewById(R.id.currentSteps6);

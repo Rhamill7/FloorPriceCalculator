@@ -42,7 +42,7 @@ public class SettingsFragment extends Fragment {
     EditText editWood;
     EditText editCoat, customerName;
     EditText extraName, extraCost;
-    boolean woodCheck =false, coatCheck = false;
+    boolean safCheck =false, radCheck = false, pineCheck = false, hardCheck = false;
     ArrayList<Double> extraCosts;
     ArrayList<String> extraNames;
     public SettingsFragment() {
@@ -68,6 +68,8 @@ public class SettingsFragment extends Fragment {
         Button deleteAll = (Button) view.findViewById(R.id.button2);
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         CheckBox checkBox2 = (CheckBox) view.findViewById(R.id.checkBox2);
+        CheckBox checkBox3 = (CheckBox) view.findViewById(R.id.checkBox3);
+        CheckBox checkBox4 = (CheckBox) view.findViewById(R.id.checkBox4);
         Button checkBoxOther = (Button) view.findViewById(R.id.buttonAddMore);
         extraCosts = new ArrayList<Double>();
         extraNames = new ArrayList<String>();
@@ -77,7 +79,7 @@ public class SettingsFragment extends Fragment {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                woodCheck = true;
+                safCheck = true;
 
             }
         });
@@ -85,7 +87,23 @@ public class SettingsFragment extends Fragment {
         checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                coatCheck = true;
+                radCheck = true;
+
+            }
+        });
+
+        checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                pineCheck = true;
+
+            }
+        });
+
+        checkBox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                hardCheck = true;
 
             }
         });
@@ -113,21 +131,27 @@ public class SettingsFragment extends Fragment {
                             + "\n Breadth: " + rooms.get(i).getBreadth()
                             + "\n Room Area: " + roomArea + "\n";
                 }
-                Double totalPrice = area* (db.getWoodPrice());
-                Double totalCoatPrice = totalPrice * (db.getCoatPrice());
-                Double totalCostPlusExtras = totalPrice;
+                Double safPrice = area* (db.getSafPrice());
+                Double radPrice = area * (db.getRadPrice());
+                Double pinePrice = area * (db.getPinePrice());
+                Double hardPrice = area * (db.getHardPrice());
+              //  Double totalCostPlusExtras = totalPrice;
                 output = output + "\n " + "Total Area: " + area;
-                if (woodCheck == (true)){
-                        output = output + "\n Total Cost: " + totalPrice;}
-                if (coatCheck == true){
-                        output = output + "\n Total Cost with Coating " + totalCoatPrice;}
-                if (!extraCosts.isEmpty()){
-
-                    for (int n =0; n<extraCosts.size(); n++){
-                        totalCostPlusExtras = totalCostPlusExtras * extraCosts.get(n);
-                    }
-
-                    output = output + "\n Total Cost with Extras " + totalCoatPrice;}
+                if (safCheck == (true)){
+                        output = output + "\n Sand + Finish: £ " + safPrice;}
+                if (radCheck == true){
+                        output = output + "\n repairs + doors: £ " + radPrice;}
+                if (pineCheck == true){
+                    output = output + "\n pine: £ " + pinePrice;}
+                if (hardCheck == true){
+                    output = output + "\n hardwood: £ " + hardPrice;}
+//                if (!extraCosts.isEmpty()){
+//
+//                    for (int n =0; n<extraCosts.size(); n++){
+//                        totalCostPlusExtras = totalCostPlusExtras * extraCosts.get(n);
+//                    }
+//
+//                    output = output + "\n Total Cost with Extras " + totalCoatPrice;}
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"roblin@blueyonder.co.uk"});
