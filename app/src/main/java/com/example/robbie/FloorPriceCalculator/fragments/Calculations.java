@@ -15,12 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.robbie.FloorPriceCalculator.Customer;
 import com.example.robbie.FloorPriceCalculator.Room;
 import com.example.robbie.FloorPriceCalculator.database.FeedReaderDbHelper;
 import com.example.robbie.FloorPriceCalculator.helpers.MyAdapter;
 import com.example.robbie.fitnesstracker.R;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ import java.util.Locale;
  */
 public class Calculations extends Fragment {
     FeedReaderDbHelper db;
+    String output = "";
 
     public Calculations() {
         // Required empty public constructor
@@ -49,7 +54,9 @@ public class Calculations extends Fragment {
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        output = db.getCust().getName();
+        TextView text = (TextView) view.findViewById(R.id.textViewResult);
+        text.setText(output);
         Button shareNow = (Button) view.findViewById(R.id.buttonShareNow);
 
         shareNow.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +74,8 @@ public class Calculations extends Fragment {
                             + "\n Breadth: " + rooms.get(i).getBreadth()
                             + "\n Room Area: " + roomArea + "\n";
                 }
+                Customer c = db.getCust();
+                output = output + c.getName();
                 Double safPrice = area* (db.getSafPrice());
                 Double radPrice = area * (db.getRadPrice());
                 Double pinePrice = area * (db.getPinePrice());
@@ -91,7 +100,7 @@ public class Calculations extends Fragment {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"roblin@blueyonder.co.uk"});
-                i.putExtra(Intent.EXTRA_SUBJECT,  " Job Pricing " + getDateTime() );
+                i.putExtra(Intent.EXTRA_SUBJECT, c.getName() + " Job Pricing " + getDateTime() );
                 //  i.putExtra(Intent.EXTRA_TEXT   , "body of email");
                 i.putExtra(Intent.EXTRA_TEXT   , output);
                 try {

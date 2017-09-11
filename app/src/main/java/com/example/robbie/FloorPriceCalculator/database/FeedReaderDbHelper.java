@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.robbie.FloorPriceCalculator.Customer;
 import com.example.robbie.FloorPriceCalculator.Room;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
   //  public static final int DATABASE_VERSION = 1;
    // public static final String DATABASE_NAME = "FeedReader.db";
     public static final String DATABASE_NAME = "SQLiteExample.db";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 18;
     public static final String GOAL_TABLE_NAME = "goal";
     public static final String GOAL_COLUMN_ID = "_id";
     public static final String GOAL_COLUMN_NAME = "name";
@@ -38,6 +39,22 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     public static final String TEST_COLUMN_HARD = "hard";
     public static final String TEST_COLUMN_INIT = "init";        ;
 
+
+
+    public static final String CUST_TABLE_NAME = "setup";
+    public static final String CUST_COLUMN_ID = "_id";
+    public static final String CUST_COLUMN_NAME = "name";
+    public static final String CUST_COLUMN_ADDRESS = "address";
+    public static final String CUST_COLUMN_NUMBER = "number";
+
+
+    public static final String SETUP_TABLE_NAME = "setup";
+    public static final String SETUP_COLUMN_ID = "_id";
+    public static final String SETUP_COLUMN_HARD = "hardwood";
+    public static final String SETUP_COLUMN_REP = "repairs";
+    public static final String SETUP_COLUMN_DOORS = "doors";
+    public static final String SETUP_COLUMN_SAF = "saftwo";
+    public static final String SETUP_COLUMN_PINE = "pinetwo";
 
     public FeedReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -58,12 +75,28 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 TEST_COLUMN_HARD+ " REAL, " +
                 TEST_COLUMN_INIT + " INTEGER)");
 
+        db.execSQL("CREATE TABLE " + CUST_TABLE_NAME +
+                "(" + CUST_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                CUST_COLUMN_NAME + " TEXT, " +
+                CUST_COLUMN_ADDRESS + " TEXT, " +
+                CUST_COLUMN_NUMBER + " TEXT)");
+
+        db.execSQL("CREATE TABLE " + SETUP_TABLE_NAME +
+                "(" + SETUP_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                SETUP_COLUMN_HARD + " INTEGER, " +
+                SETUP_COLUMN_REP + " INTEGER, " +
+                SETUP_COLUMN_DOORS+ " INTEGER, " +
+                SETUP_COLUMN_SAF+ " INTEGER, " +
+                SETUP_COLUMN_PINE + " INTEGER)");
+
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         db.execSQL("DROP TABLE IF EXISTS " + GOAL_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TEST_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CUST_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + SETUP_TABLE_NAME);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -263,5 +296,31 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         }
         return rooms;
 
+    }
+
+
+    ////////ADDDING CUSTOMER//////////////
+
+    public boolean insertCustomer(String name, String address, String number) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CUST_COLUMN_NAME, name);
+        contentValues.put(CUST_COLUMN_ADDRESS, address);
+        contentValues.put(CUST_COLUMN_NUMBER, number);
+        db.insert(CUST_TABLE_NAME, null, contentValues);
+        return true;
+    }
+
+        public Customer getCust() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =  db.rawQuery( "SELECT * FROM " + CUST_TABLE_NAME, null );
+        cursor.moveToLast();
+        String name = cursor.getString(1);
+        String address = cursor.getString(2);
+        String number = cursor.getString(3);
+
+
+        Customer object = new Customer(name, address, number);
+        return object;
     }
 }
