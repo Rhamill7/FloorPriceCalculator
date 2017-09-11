@@ -15,10 +15,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -38,13 +40,14 @@ import java.util.Locale;
  */
 public class SettingsFragment extends Fragment {
 
+    Spinner s;
     FeedReaderDbHelper db;
     public String date;
     public Boolean testMode, goalsEditable;
     EditText editWood;
     EditText editCoat, customerName;
     EditText extraName, extraCost;
-    boolean safCheck =false, radCheck = false, pineCheck = false, hardCheck = false;
+    int h =0, r = 0, d = 0, saf = 0, p=0;
     ArrayList<Double> extraCosts;
     ArrayList<String> extraNames;
     public SettingsFragment() {
@@ -62,8 +65,8 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        editWood = (EditText)  view.findViewById(R.id.editText4);
-        editCoat = (EditText)  view.findViewById(R.id.editText3);
+        //editWood = (EditText)  view.findViewById(R.id.editText4);
+        //editCoat = (EditText)  view.findViewById(R.id.editText3);
       //  customerName = (EditText) view.findViewById(R.id.editText7);
 
         Button next = (Button) view.findViewById(R.id.button2);
@@ -71,16 +74,26 @@ public class SettingsFragment extends Fragment {
         CheckBox checkBox2 = (CheckBox) view.findViewById(R.id.checkBox2);
         CheckBox checkBox3 = (CheckBox) view.findViewById(R.id.checkBox3);
         CheckBox checkBox4 = (CheckBox) view.findViewById(R.id.checkBox4);
+        CheckBox checkBox5 = (CheckBox) view.findViewById(R.id.checkBox5);
         Button checkBoxOther = (Button) view.findViewById(R.id.buttonAddMore);
         extraCosts = new ArrayList<Double>();
         extraNames = new ArrayList<String>();
+
+
+        final String[] spinner = new String[]{"0","1", "2", "3", "4","5","6","7","8","9"};
+       // String[] spinner2 = new String[]{"All","Completed","Above %", "Below %"};
+
+         s = (Spinner) view.findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
+                android.R.layout.simple_dropdown_item_1line, spinner);
+        s.setAdapter(adapter);
 
 
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                safCheck = true;
+                saf = 1;
 
             }
         });
@@ -88,7 +101,7 @@ public class SettingsFragment extends Fragment {
         checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                radCheck = true;
+                r = 1;
 
             }
         });
@@ -96,7 +109,7 @@ public class SettingsFragment extends Fragment {
         checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                pineCheck = true;
+                p = 1;
 
             }
         });
@@ -104,7 +117,15 @@ public class SettingsFragment extends Fragment {
         checkBox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                hardCheck = true;
+                h = 1;
+
+            }
+        });
+
+        checkBox5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                d = 1;
 
             }
         });
@@ -119,14 +140,22 @@ public class SettingsFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calculations nextFrag= new Calculations();
 
-                FragmentManager fragmentManager=getActivity().getFragmentManager();
-                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_summary_screen,nextFrag,"tag");
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                try {
 
+                    d = Integer.parseInt(s.getSelectedItem().toString());
+                    db.insertSetup(h, r, d, saf, p);
+                    Calculations nextFrag = new Calculations();
+
+                    FragmentManager fragmentManager = getActivity().getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.content_summary_screen, nextFrag, "tag");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }catch (Exception e){
+                    Toast.makeText(getContext(), "Please Enter a Name and/or Cost per meter squared", Toast.LENGTH_LONG).show();
+
+                }
 
             }
         });

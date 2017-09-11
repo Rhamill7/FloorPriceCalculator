@@ -22,7 +22,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
   //  public static final int DATABASE_VERSION = 1;
    // public static final String DATABASE_NAME = "FeedReader.db";
     public static final String DATABASE_NAME = "SQLiteExample.db";
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 21;
     public static final String GOAL_TABLE_NAME = "goal";
     public static final String GOAL_COLUMN_ID = "_id";
     public static final String GOAL_COLUMN_NAME = "name";
@@ -37,13 +37,14 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     public static final String TEST_COLUMN_RAD = "rad";
     public static final String TEST_COLUMN_PINE = "pine";
     public static final String TEST_COLUMN_HARD = "hard";
-    public static final String TEST_COLUMN_INIT = "init";        ;
+    public static final String TEST_COLUMN_INIT = "init";
+    public static final String TEST_COLUMN_DOOR = "door";
 
 
 
-    public static final String CUST_TABLE_NAME = "setup";
+    public static final String CUST_TABLE_NAME = "cust";
     public static final String CUST_COLUMN_ID = "_id";
-    public static final String CUST_COLUMN_NAME = "name";
+    public static final String CUST_COLUMN_NAME = "nametwo";
     public static final String CUST_COLUMN_ADDRESS = "address";
     public static final String CUST_COLUMN_NUMBER = "number";
 
@@ -73,7 +74,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 TEST_COLUMN_RAD+ " REAL, " +
                 TEST_COLUMN_PINE+ " REAL, " +
                 TEST_COLUMN_HARD+ " REAL, " +
-                TEST_COLUMN_INIT + " INTEGER)");
+                TEST_COLUMN_INIT + " INTEGER, " +
+                TEST_COLUMN_DOOR + " INTEGER)");
 
         db.execSQL("CREATE TABLE " + CUST_TABLE_NAME +
                 "(" + CUST_COLUMN_ID + " INTEGER PRIMARY KEY, " +
@@ -114,6 +116,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         contentValues.put(TEST_COLUMN_PINE, 1);
         contentValues.put(TEST_COLUMN_HARD, 1);
         contentValues.put(TEST_COLUMN_INIT, 1);
+        contentValues.put(TEST_COLUMN_DOOR, 1);
+
 
         db.insert(TEST_TABLE_NAME, null, contentValues);
         return true;
@@ -132,7 +136,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(2));
+        double act = Double.parseDouble(cursor.getString(1));
         return act;
     }
 
@@ -150,7 +154,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(3));
+        double act = Double.parseDouble(cursor.getString(2));
         return act;
     }
 
@@ -167,7 +171,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(4));
+        double act = Double.parseDouble(cursor.getString(3));
         return act;
     }
 
@@ -184,7 +188,24 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(5));
+        double act = Double.parseDouble(cursor.getString(4));
+        return act;
+    }
+
+    public void setDoorPrice(double doorPrice) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues args = new ContentValues();
+        args.put(TEST_COLUMN_DOOR, doorPrice);
+        // args.put(TEST_COLUMN_ACTIVE, active);
+        db.update(TEST_TABLE_NAME, args, TEST_COLUMN_NAME + " = ? ", new String[]{"Test"});
+    }
+
+    public double getDoorPrice() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
+                TEST_COLUMN_NAME + "=?", new String[]{"Test"});
+        cursor.moveToFirst();
+        double act = Double.parseDouble(cursor.getString(6));
         return act;
     }
 
@@ -194,7 +215,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        int act = Integer.parseInt(cursor.getString(6));
+        int act = Integer.parseInt(cursor.getString(5));
         if (act == 1){
             bool = true;
         }
@@ -322,5 +343,42 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
 
         Customer object = new Customer(name, address, number);
         return object;
+    }
+
+
+    ///////////////Adding setup
+
+    public boolean insertSetup(int h, int r, int d, int saf,int p) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SETUP_COLUMN_HARD, h);
+        contentValues.put(SETUP_COLUMN_REP, r);
+        contentValues.put(SETUP_COLUMN_DOORS, d);
+        contentValues.put(SETUP_COLUMN_SAF, saf );
+        contentValues.put(SETUP_COLUMN_PINE, p);
+
+
+        db.insert(SETUP_TABLE_NAME, null, contentValues);
+        return true;
+    }
+
+    public ArrayList<Integer> getSetup() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =  db.rawQuery( "SELECT * FROM " + SETUP_TABLE_NAME, null );
+        cursor.moveToLast();
+        int h = Integer.parseInt(cursor.getString(1));
+        int r = Integer.parseInt(cursor.getString(2));
+        int d = Integer.parseInt(cursor.getString(3));
+        int saf = Integer.parseInt(cursor.getString(4));
+        int p = Integer.parseInt(cursor.getString(5));
+
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(h);
+        list.add(r);
+        list.add(d);
+        list.add(saf);
+        list.add(p);
+
+        return list;
     }
 }

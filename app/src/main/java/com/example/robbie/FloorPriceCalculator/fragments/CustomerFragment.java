@@ -36,6 +36,14 @@ public class CustomerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         db = new FeedReaderDbHelper(getContext());
+        try{
+            db.testInit();
+        }
+        catch(Exception e){
+            db.initialiseSettings();
+        }
+
+
         return inflater.inflate(R.layout.fragment_customer, container, false);
     }
 

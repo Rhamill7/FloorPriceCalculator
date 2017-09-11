@@ -54,34 +54,73 @@ public class Calculations extends Fragment {
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        output = db.getCust().getName();
+       // output = db.getCust().getName();
         TextView text = (TextView) view.findViewById(R.id.textViewResult);
-        text.setText(output);
+
         Button shareNow = (Button) view.findViewById(R.id.buttonShareNow);
+
+
+
+        ArrayList<Room> rooms = db.getRooms();
+        Double area = 0.0;
+        for (int i = 0; i<rooms.size(); i++){
+            Double roomArea = (rooms.get(i).getLength() * rooms.get(i).getBreadth());
+            area = area + roomArea;
+            output = output + "\n" + "Name: " + rooms.get(i).getName()
+                    + "\n Length: " + rooms.get(i).getLength()
+                    + "\n Breadth: " + rooms.get(i).getBreadth()
+                    + "\n Room Area: " + roomArea + "\n\n";
+        }
+        Double totalPrice = 0.0;
+        ArrayList<Integer> list = db.getSetup();
+        if (list.get(0)== 1){
+            output = output + "\n Hardwood Price £ " +  area * (db.getHardPrice());
+            totalPrice = totalPrice + (area * (db.getHardPrice()));
+        }
+        if (list.get(1)== 1){
+            output = output + "\n Repairs Price £ " +  area * (db.getRadPrice());
+            totalPrice = totalPrice + (area * (db.getRadPrice()));
+        }
+        if (list.get(2)!= 0){
+            output = output + "\n Doors Price £ " +  list.get(2) * (db.getDoorPrice());
+            totalPrice = totalPrice + (area * (db.getDoorPrice()));
+        }
+        if (list.get(3)== 1){
+            output = output + "\n Sand+Fin Price £ " +  area * (db.getSafPrice());
+            totalPrice = totalPrice + (area * (db.getSafPrice()));
+        }
+        if (list.get(4)== 1){
+            output = output + "\n Pine Price £ " +  area * (db.getPinePrice());
+            totalPrice = totalPrice + (area * (db.getPinePrice()));
+        }
+
+        output = output + "\n Total Price £ " + totalPrice;
+
+        text.setText(output);
 
         shareNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String output = "";
+               // String output = "";
 
-                ArrayList<Room> rooms = db.getRooms();
-                Double area = 0.0;
-                for (int i = 0; i<rooms.size(); i++){
-                    Double roomArea = (rooms.get(i).getLength() * rooms.get(i).getBreadth());
-                    area = area + roomArea;
-                    output = output + "\n" + "Name: " + rooms.get(i).getName()
-                            + "\n Length: " + rooms.get(i).getLength()
-                            + "\n Breadth: " + rooms.get(i).getBreadth()
-                            + "\n Room Area: " + roomArea + "\n";
-                }
-                Customer c = db.getCust();
-                output = output + c.getName();
-                Double safPrice = area* (db.getSafPrice());
-                Double radPrice = area * (db.getRadPrice());
-                Double pinePrice = area * (db.getPinePrice());
-                Double hardPrice = area * (db.getHardPrice());
+//                ArrayList<Room> rooms = db.getRooms();
+//                Double area = 0.0;
+//                for (int i = 0; i<rooms.size(); i++){
+//                    Double roomArea = (rooms.get(i).getLength() * rooms.get(i).getBreadth());
+//                    area = area + roomArea;
+//                    output = output + "\n" + "Name: " + rooms.get(i).getName()
+//                            + "\n Length: " + rooms.get(i).getLength()
+//                            + "\n Breadth: " + rooms.get(i).getBreadth()
+//                            + "\n Room Area: " + roomArea + "\n";
+//                }
+//                Customer c = db.getCust();
+//                output = output + c.getName();
+//                Double safPrice = area* (db.getSafPrice());
+//                Double radPrice = area * (db.getRadPrice());
+//                Double pinePrice = area * (db.getPinePrice());
+//                Double hardPrice = area * (db.getHardPrice());
                 //  Double totalCostPlusExtras = totalPrice;
-                output = output + "\n " + "Total Area: " + area;
+              //  output = output + "\n " + "Total Area: " + area;
 //                if (safCheck == (true)){
 //                    output = output + "\n Sand + Finish: £ " + safPrice;}
 //                if (radCheck == true){
@@ -100,7 +139,7 @@ public class Calculations extends Fragment {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"roblin@blueyonder.co.uk"});
-                i.putExtra(Intent.EXTRA_SUBJECT, c.getName() + " Job Pricing " + getDateTime() );
+                i.putExtra(Intent.EXTRA_SUBJECT,  " Job Pricing " + getDateTime() );
                 //  i.putExtra(Intent.EXTRA_TEXT   , "body of email");
                 i.putExtra(Intent.EXTRA_TEXT   , output);
                 try {

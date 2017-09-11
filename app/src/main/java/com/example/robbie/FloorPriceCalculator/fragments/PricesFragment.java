@@ -32,13 +32,8 @@ import java.util.Locale;
 public class PricesFragment extends Fragment {
 
     FeedReaderDbHelper db;
-    public String date;
-    public Boolean testMode, goalsEditable;
-    EditText sandAndFinish, repAndDoors, pine, hardWood;
-    EditText extraName, extraCost;
-    boolean woodCheck =false, coatCheck = false;
-    ArrayList<Double> extraCosts;
-    ArrayList<String> extraNames;
+    EditText sandAndFinish, repAndDoors, pine, hardWood, doors;
+
 
 
     public PricesFragment() {
@@ -56,16 +51,18 @@ public class PricesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        sandAndFinish = (EditText)  view.findViewById(R.id.editText3);
-        repAndDoors = (EditText)  view.findViewById(R.id.editText4);
-        pine = (EditText)  view.findViewById(R.id.editText9);
-        hardWood = (EditText) view.findViewById(R.id.editText10);
+        sandAndFinish = (EditText)  view.findViewById(R.id.editTextSAF);
+        repAndDoors = (EditText)  view.findViewById(R.id.editText4REP);
+        pine = (EditText)  view.findViewById(R.id.editText9PINE);
+        hardWood = (EditText) view.findViewById(R.id.editText10HARD);
+        doors = (EditText) view.findViewById(R.id.editText11Door);
 
         Button pricesButton = (Button) view.findViewById(R.id.button);
-        sandAndFinish.setText(Double.toString(db.getSafPrice()));
-        repAndDoors.setText(Double.toString(db.getRadPrice()));
-        pine.setText(Double.toString(db.getPinePrice()));
-        hardWood.setText(Double.toString(db.getHardPrice()));
+     //   sandAndFinish.setText(Double.toString(db.getSafPrice()));
+    //    repAndDoors.setText(Double.toString(db.getRadPrice()));
+  //      pine.setText(Double.toString(db.getPinePrice()));
+ //       hardWood.setText(Double.toString(db.getHardPrice()));
+//        doors.setText(Double.toString(db.getDoorPrice()));
 
 
         pricesButton.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +91,12 @@ public class PricesFragment extends Fragment {
                 try{
                     Double tempCoat = Double.parseDouble(hardWood.getText().toString());
                     db.setHardPrice(tempCoat);
+                } catch (Exception e){
+                    Toast.makeText(getContext(), "Naw Coat!", Toast.LENGTH_LONG).show();
+                }
+                try{
+                    Double tempCoat = Double.parseDouble(doors.getText().toString());
+                    db.setDoorPrice(tempCoat);
                 } catch (Exception e){
                     Toast.makeText(getContext(), "Naw Coat!", Toast.LENGTH_LONG).show();
                 }
