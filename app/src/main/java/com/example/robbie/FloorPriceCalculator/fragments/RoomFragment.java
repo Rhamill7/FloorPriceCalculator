@@ -3,6 +3,7 @@ package com.example.robbie.FloorPriceCalculator.fragments;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -81,7 +83,7 @@ public class RoomFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       calculations();
+      // calculations();
 
 
         com.github.clans.fab.FloatingActionButton fabGoal = (com.github.clans.fab.FloatingActionButton)view.findViewById(R.id.menu2);
@@ -94,6 +96,60 @@ public class RoomFragment extends Fragment {
         });
 
 
+        Button nextButton = (Button) view.findViewById(R.id.buttonNext2);
+        Button clear = (Button) view.findViewById(R.id.buttonClear);
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingsFragment nextFrag= new SettingsFragment();
+
+                FragmentManager fragmentManager=getActivity().getFragmentManager();
+                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_summary_screen,nextFrag,"tag");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
+            }
+        });
+
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Are you sure you want to clear history?");
+                    builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int id) {
+                            db.deleteAllRooms();
+                            RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+                            rv.setHasFixedSize(true);
+                            ArrayList<Room> rooms = populateRooms();
+                            MyAdapter adapter = new MyAdapter( rooms, getContext());
+                            rv.setAdapter(adapter);
+                            rv.invalidate();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    Dialog d = builder.create();
+                    d.show();
+
+
+
+                    Toast.makeText(getContext(), "Aye!", Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e){
+                    Toast.makeText(getContext(), "Naw m8!", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
     }
 
 
@@ -183,11 +239,11 @@ public class RoomFragment extends Fragment {
         Double totalPrice = area* (db.getSafPrice());
        // Double totalCoatPrice = totalPrice * (db.getCoatPrice());
       //  CardView cv = (CardView) rootView.findViewById(R.id.card_view_active);
-        TextView current = (TextView) this.getView().findViewById(R.id.textView5);
+      //  TextView current = (TextView) this.getView().findViewById(R.id.textView5);
       //  TextView totalPriceText = (TextView) this.getView().findViewById(R.id.currentSteps6);
        // TextView totalCoatText = (TextView) this.getView().findViewById(R.id.textView11);
       //  TextView areaText = (TextView) this.getView().findViewById(R.id.textView5);
-        current.setText(area.toString());
+       // current.setText(area.toString());
        // totalPriceText.setText(totalPrice.toString());
        //1 totalCoatText.setText(totalCoatPrice.toString());
 

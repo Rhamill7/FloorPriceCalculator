@@ -2,6 +2,8 @@ package com.example.robbie.FloorPriceCalculator.fragments;
 
 
 import android.app.Dialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,10 +64,9 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         editWood = (EditText)  view.findViewById(R.id.editText4);
         editCoat = (EditText)  view.findViewById(R.id.editText3);
-        customerName = (EditText) view.findViewById(R.id.editText7);
+      //  customerName = (EditText) view.findViewById(R.id.editText7);
 
-        Button shareButton = (Button) view.findViewById(R.id.buttonShare);
-        Button deleteAll = (Button) view.findViewById(R.id.button2);
+        Button next = (Button) view.findViewById(R.id.button2);
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         CheckBox checkBox2 = (CheckBox) view.findViewById(R.id.checkBox2);
         CheckBox checkBox3 = (CheckBox) view.findViewById(R.id.checkBox3);
@@ -115,97 +116,27 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-
-        shareButton.setOnClickListener(new View.OnClickListener() {
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String output = "";
+                Calculations nextFrag= new Calculations();
 
-                ArrayList<Room> rooms = db.getRooms();
-                Double area = 0.0;
-                for (int i = 0; i<rooms.size(); i++){
-                    Double roomArea = (rooms.get(i).getLength() * rooms.get(i).getBreadth());
-                    area = area + roomArea;
-                    output = output + "\n" + "Name: " + rooms.get(i).getName()
-                            + "\n Length: " + rooms.get(i).getLength()
-                            + "\n Breadth: " + rooms.get(i).getBreadth()
-                            + "\n Room Area: " + roomArea + "\n";
-                }
-                Double safPrice = area* (db.getSafPrice());
-                Double radPrice = area * (db.getRadPrice());
-                Double pinePrice = area * (db.getPinePrice());
-                Double hardPrice = area * (db.getHardPrice());
-              //  Double totalCostPlusExtras = totalPrice;
-                output = output + "\n " + "Total Area: " + area;
-                if (safCheck == (true)){
-                        output = output + "\n Sand + Finish: £ " + safPrice;}
-                if (radCheck == true){
-                        output = output + "\n repairs + doors: £ " + radPrice;}
-                if (pineCheck == true){
-                    output = output + "\n pine: £ " + pinePrice;}
-                if (hardCheck == true){
-                    output = output + "\n hardwood: £ " + hardPrice;}
-//                if (!extraCosts.isEmpty()){
-//
-//                    for (int n =0; n<extraCosts.size(); n++){
-//                        totalCostPlusExtras = totalCostPlusExtras * extraCosts.get(n);
-//                    }
-//
-//                    output = output + "\n Total Cost with Extras " + totalCoatPrice;}
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"roblin@blueyonder.co.uk"});
-                i.putExtra(Intent.EXTRA_SUBJECT, customerName.getText().toString() + " Job Pricing " + getDateTime() );
-              //  i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-                i.putExtra(Intent.EXTRA_TEXT   , output);
-                try {
-                    startActivity(Intent.createChooser(i, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                }
+                FragmentManager fragmentManager=getActivity().getFragmentManager();
+                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_summary_screen,nextFrag,"tag");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
             }
         });
 
-        deleteAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try{
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Are you sure you want to clear history?");
-                    builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface dialog, int id) {
-                            db.deleteAllRooms();
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
-                    Dialog d = builder.create();
-                    d.show();
 
 
 
-                    Toast.makeText(getContext(), "Aye!", Toast.LENGTH_LONG).show();
-                }
-                catch (Exception e){
-                    Toast.makeText(getContext(), "Naw m8!", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
     }
 
-    private String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                // "yyyy-MM-dd HH:mm:ss", Locale.getDefault();
-                //"yyyy-MM-dd"
-                "dd-MM-yyy", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date).toString();
-    }
+
     public void addCosts(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();

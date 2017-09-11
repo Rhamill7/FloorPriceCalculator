@@ -41,7 +41,7 @@ public class CustomerFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingsFragment nextFrag= new SettingsFragment();
+                RoomFragment nextFrag= new RoomFragment();
 
                 FragmentManager fragmentManager=getActivity().getFragmentManager();
                 FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
