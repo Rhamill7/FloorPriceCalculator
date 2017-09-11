@@ -51,8 +51,8 @@ public class CustomerFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         custName = (EditText) view.findViewById(R.id.editTextName);
-        custAddress = (EditText) view.findViewById(R.id.editTextName);
-        custNumber = (EditText) view.findViewById(R.id.editTextName);
+        custAddress = (EditText) view.findViewById(R.id.editTextAddress);
+        custNumber = (EditText) view.findViewById(R.id.editTextNumber);
 
         Button nextButton = (Button) view.findViewById(R.id.buttonNext1);
 
@@ -61,8 +61,8 @@ public class CustomerFragment extends Fragment {
             public void onClick(View v) {
 
                 String name = custName.getText().toString();
-                String address = custName.getText().toString();
-                String number = custName.getText().toString();
+                String address = custAddress.getText().toString();
+                String number = custNumber.getText().toString();
 
                 try{
                     db.insertCustomer(name,address,number);

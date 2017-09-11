@@ -66,15 +66,16 @@ public class Calculations extends Fragment {
         for (int i = 0; i<rooms.size(); i++){
             Double roomArea = (rooms.get(i).getLength() * rooms.get(i).getBreadth());
             area = area + roomArea;
-            output = output + "\n" + "Name: " + rooms.get(i).getName()
-                    + "\n Length: " + rooms.get(i).getLength()
-                    + "\n Breadth: " + rooms.get(i).getBreadth()
-                    + "\n Room Area: " + roomArea + "\n\n";
+//            output = output + "\n" + "Name: " + rooms.get(i).getName()
+//                    + "\n Length: " + rooms.get(i).getLength()
+//                    + "\n Breadth: " + rooms.get(i).getBreadth()
+//                    + "\n Room Area: " + roomArea + "\n\n";
         }
+        output = output + "TOTAL AREA: " + area;
         Double totalPrice = 0.0;
         ArrayList<Integer> list = db.getSetup();
         if (list.get(0)== 1){
-            output = output + "\n Hardwood Price £ " +  area * (db.getHardPrice());
+            output = output + "\n\n Hardwood Price £ " +  area * (db.getHardPrice());
             totalPrice = totalPrice + (area * (db.getHardPrice()));
         }
         if (list.get(1)== 1){
@@ -83,7 +84,7 @@ public class Calculations extends Fragment {
         }
         if (list.get(2)!= 0){
             output = output + "\n Doors Price £ " +  list.get(2) * (db.getDoorPrice());
-            totalPrice = totalPrice + (area * (db.getDoorPrice()));
+            totalPrice = totalPrice + (list.get(2) * (db.getDoorPrice()));
         }
         if (list.get(3)== 1){
             output = output + "\n Sand+Fin Price £ " +  area * (db.getSafPrice());
@@ -94,25 +95,26 @@ public class Calculations extends Fragment {
             totalPrice = totalPrice + (area * (db.getPinePrice()));
         }
 
-        output = output + "\n Total Price £ " + totalPrice;
+        output = output + "\n\n Total Price £ " + totalPrice;
 
         text.setText(output);
 
         shareNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // String output = "";
+                String areaoutput = "";
 
-//                ArrayList<Room> rooms = db.getRooms();
-//                Double area = 0.0;
-//                for (int i = 0; i<rooms.size(); i++){
-//                    Double roomArea = (rooms.get(i).getLength() * rooms.get(i).getBreadth());
-//                    area = area + roomArea;
-//                    output = output + "\n" + "Name: " + rooms.get(i).getName()
-//                            + "\n Length: " + rooms.get(i).getLength()
-//                            + "\n Breadth: " + rooms.get(i).getBreadth()
-//                            + "\n Room Area: " + roomArea + "\n";
-//                }
+                ArrayList<Room> rooms = db.getRooms();
+                Double area = 0.0;
+                for (int i = 0; i<rooms.size(); i++){
+                    Double roomArea = (rooms.get(i).getLength() * rooms.get(i).getBreadth());
+                    area = area + roomArea;
+                    areaoutput = areaoutput + "\n" + "Name: " + rooms.get(i).getName()
+                            + "\n Length: " + rooms.get(i).getLength()
+                            + "\n Breadth: " + rooms.get(i).getBreadth()
+                            + "\n Room Area: " + roomArea + "\n";
+                }
+                output = areaoutput + "\n" + output;
 //                Customer c = db.getCust();
 //                output = output + c.getName();
 //                Double safPrice = area* (db.getSafPrice());
@@ -139,9 +141,10 @@ public class Calculations extends Fragment {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"roblin@blueyonder.co.uk"});
-                i.putExtra(Intent.EXTRA_SUBJECT,  " Job Pricing " + getDateTime() );
+                i.putExtra(Intent.EXTRA_SUBJECT, db.getCust().getName() + " Job Pricing " + getDateTime() );
                 //  i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-                i.putExtra(Intent.EXTRA_TEXT   , output);
+                i.putExtra(Intent.EXTRA_TEXT   , db.getCust().getName() + " "
+                        + db.getCust().getAddress() + " " + db.getCust().getNumber() + " \n" + output);
                 try {
                     startActivity(Intent.createChooser(i, "Send mail..."));
                 } catch (android.content.ActivityNotFoundException ex) {

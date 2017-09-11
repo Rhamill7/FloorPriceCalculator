@@ -136,7 +136,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(1));
+        double act = Double.parseDouble(cursor.getString(2));
         return act;
     }
 
@@ -154,7 +154,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(2));
+        double act = Double.parseDouble(cursor.getString(3));
         return act;
     }
 
@@ -171,7 +171,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(3));
+        double act = Double.parseDouble(cursor.getString(4));
         return act;
     }
 
@@ -188,7 +188,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(4));
+        double act = Double.parseDouble(cursor.getString(5));
         return act;
     }
 
@@ -205,7 +205,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        double act = Double.parseDouble(cursor.getString(6));
+        double act = Double.parseDouble(cursor.getString(7));
         return act;
     }
 
@@ -215,7 +215,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery("SELECT * FROM " + TEST_TABLE_NAME + " WHERE " +
                 TEST_COLUMN_NAME + "=?", new String[]{"Test"});
         cursor.moveToFirst();
-        int act = Integer.parseInt(cursor.getString(5));
+        int act = Integer.parseInt(cursor.getString(6));
         if (act == 1){
             bool = true;
         }
