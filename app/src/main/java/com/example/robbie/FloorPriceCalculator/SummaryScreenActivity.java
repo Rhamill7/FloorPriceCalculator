@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.robbie.FloorPriceCalculator.fragments.CustomerFragment;
 import com.example.robbie.FloorPriceCalculator.fragments.PricesFragment;
 import com.example.robbie.FloorPriceCalculator.fragments.RoomFragment;
 import com.example.robbie.FloorPriceCalculator.fragments.SettingsFragment;
@@ -37,8 +38,9 @@ public class SummaryScreenActivity extends AppCompatActivity
 
 
        FragmentManager manager = getFragmentManager();
-        RoomFragment roomFragment = new RoomFragment();
-        manager.beginTransaction().replace(R.id.content_summary_screen, roomFragment, roomFragment.getTag()).commit();
+       // RoomFragment roomFragment = new RoomFragment();
+        CustomerFragment custmerFragment = new CustomerFragment();
+        manager.beginTransaction().replace(R.id.content_summary_screen, custmerFragment, custmerFragment.getTag()).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
